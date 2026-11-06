@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Адмінка — Motty Handmade</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<script>
+// Run immediately (not DOMContentLoaded) for instant display
+(function(){
+  var auth;
+  try { auth = sessionStorage.getItem('motty_admin_auth'); } catch(e){}
+  if (auth === 'ok') {
+    document.addEventListener('DOMContentLoaded', function(){
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('appScreen').style.display = 'grid';
+      Admin.initLogin();
+    });
+  } else {
+    document.addEventListener('DOMContentLoaded', function(){
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('appScreen').style.display = 'none';
+      Admin.initLogin();
+    });
+  }
+})();
+</script>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="loginScreen" class="admin-login" style="display:none">
+  <div class="admin-login-box">
+    <h2>Motty Admin</h2>
+    <p>Введіть PIN-код для входу</p>
+    <div class="admin-pin">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+    </div>
+    <div class="numpad">
+      <button class="num-key" onclick="Admin.pressNum('1')">1</button>
+      <button class="num-key" onclick="Admin.pressNum('2')">2</button>
+      <button class="num-key" onclick="Admin.pressNum('3')">3</button>
+      <button class="num-key" onclick="Admin.pressNum('4')">4</button>
+      <button class="num-key" onclick="Admin.pressNum('5')">5</button>
+      <button class="num-key" onclick="Admin.pressNum('6')">6</button>
+      <button class="num-key" onclick="Admin.pressNum('7')">7</button>
+      <button class="num-key" onclick="Admin.pressNum('8')">8</button>
+      <button class="num-key" onclick="Admin.pressNum('9')">9</button>
+      <button class="num-key del" onclick="Admin.pressBack()">⌫</button>
+      <button class="num-key" onclick="Admin.pressNum('0')">0</button>
+      <div></div>
+    </div>
+    <p style="font-size:12px;color:var(--mute);margin-top:16px">PIN за замовчуванням: 1234</p>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="appScreen" class="admin-layout" style="display:none">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-brand">
+      <h2>Motty Admin</h2>
+      <p>Панель управління</p>
+    </div>
+    <nav class="admin-nav">
+      <button class="admin-nav-item" data-tab="dashboard" onclick="Admin.switchTab('dashboard')">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Дашборд
+      </button>
+      <button class="admin-nav-item" data-tab="orders" onclick="Admin.switchTab('orders')">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Замовлення
+      </button>
+      <button class="admin-nav-item" data-tab="products" onclick="Admin.switchTab('products')">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        Товари
+      </button>
+      <button class="admin-nav-item" data-tab="settings" onclick="Admin.switchTab('settings')">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Налаштування
+      </button>
+    </nav>
+    <div class="admin-logout">
+      <a href="index.html" style="display:block;margin-bottom:8px;font-size:13px;color:#9E8A8E">← До магазину</a>
+      <button onclick="Admin.logout()">Вийти</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <h1 id="adminPageTitle">Дашборд</h1>
+      <span style="font-size:13px;color:var(--mute)" id="adminDate"></span>
+    </div>
+
+    <div class="admin-content">
+
+      <!-- ── DASHBOARD ── -->
+      <div id="tab-dashboard" class="admin-tab">
+        <div class="admin-stats">
+          <div class="stat-card">
+            <div class="label">Всього замовлень</div>
+            <div class="value" id="statOrders">0</div>
+            <div class="sub">за весь час</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Виручка</div>
+            <div class="value" id="statRevenue">0 ₴</div>
+            <div class="sub">загальна</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Нові замовлення</div>
+            <div class="value" id="statNew">0</div>
+            <div class="sub delta-ok">потребують обробки</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Сьогодні</div>
+            <div class="value" id="statToday">0</div>
+            <div class="sub">замовлень</div>
+          </div>
+        </div>
+        <div class="admin-table-wrap">
+          <div class="admin-table-head">
+            <h3>Останні замовлення</h3>
+            <button class="btn btn-outline btn-sm" onclick="Admin.switchTab('orders')">Всі замовлення</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr>
+                <th>ID</th><th>Покупець</th><th>Телефон</th>
+                <th>Сума</th><th>Статус</th><th>Дата</th><th>Дія</th>
+              </tr></thead>
+              <tbody id="recentOrdersBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ORDERS ── -->
+      <div id="tab-orders" class="admin-tab" style="display:none">
+        <div class="admin-table-wrap">
+          <div class="admin-table-head">
+            <h3>Всі замовлення</h3>
+            <div class="admin-search">
+              <input type="text" placeholder="Пошук за ID, ім'ям, телефоном..."
+                oninput="Admin.searchOrders(this.value)">
+            </div>
+          </div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr>
+                <th>ID</th><th>Покупець</th><th>Товари</th>
+                <th>Сума</th><th>Доставка</th><th>Статус</th><th>Дата</th><th>Дія</th>
+              </tr></thead>
+              <tbody id="ordersBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PRODUCTS ── -->
+      <div id="tab-products" class="admin-tab" style="display:none">
+        <div class="admin-table-wrap">
+          <div class="admin-table-head">
+            <h3>Товари</h3>
+            <div class="admin-search">
+              <input type="text" placeholder="Пошук за назвою або SKU..."
+                oninput="Admin.searchProducts(this.value)">
+              <button class="btn btn-primary btn-sm" onclick="Admin.openProductModal()">+ Додати товар</button>
+            </div>
+          </div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr>
+                <th>Фото</th><th>Назва / SKU</th><th>Категорія</th>
+                <th>Ціна</th><th>Наявність</th><th>Дії</th>
+              </tr></thead>
+              <tbody id="productsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SETTINGS ── -->
+      <div id="tab-settings" class="admin-tab" style="display:none">
+        <div class="settings-grid">
+          <div class="settings-card">
+            <h4>Контакти магазину</h4>
+            <div class="field"><label>Телефон</label><input id="settingPhone" type="tel"></div>
+            <div class="field"><label>Telegram</label><input id="settingTelegram" type="text" placeholder="@username"></div>
+            <div class="field"><label>Instagram</label><input id="settingInstagram" type="text" placeholder="@username"></div>
+            <div class="field"><label>Email</label><input id="settingEmail" type="email"></div>
+          </div>
+          <div class="settings-card">
+            <h4>Telegram Bot (для замовлень)</h4>
+            <div class="field"><label>Bot Token</label><input id="settingTgToken" type="text" placeholder="1234567890:ABC..."></div>
+            <div class="field"><label>Chat ID</label><input id="settingTgChat" type="text" placeholder="-100..."></div>
+            <div style="background:var(--soft);border-radius:8px;padding:12px;font-size:13px;color:var(--mute);line-height:1.6">
+              💡 Створіть бота через <a href="https://t.me/BotFather" target="_blank" style="color:var(--acc)">@BotFather</a>, отримайте токен. Chat ID — ваш Telegram ID або ID групи.
+            </div>
+          </div>
+          <div class="settings-card">
+            <h4>Загальні налаштування</h4>
+            <div class="field"><label>Безкоштовна доставка від (₴)</label><input id="settingFreeFrom" type="number"></div>
+            <div class="field"><label>PIN-код адмінки</label><input id="settingPin" type="text" maxlength="4" placeholder="4 цифри"></div>
+          </div>
+          <div class="settings-card">
+            <h4>Дані</h4>
+            <p style="font-size:13px;color:var(--mute);margin-bottom:16px">Замовлення та налаштування зберігаються в localStorage браузера.</p>
+            <button class="btn btn-outline btn-sm" onclick="exportOrders()">📥 Експорт замовлень CSV</button>
+            <button class="btn btn-outline btn-sm" style="margin-top:8px;color:var(--bad);border-color:var(--bad)" onclick="clearOrders()">🗑 Очистити замовлення</button>
+          </div>
+        </div>
+        <div style="margin-top:24px">
+          <button class="btn btn-primary" onclick="Admin.saveSettings()">Зберегти налаштування</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Product Modal -->
+<div class="admin-modal-overlay" id="productModal">
+  <div class="admin-modal" style="max-width:700px">
+    <button class="admin-modal-close" onclick="Admin.closeProductModal()">×</button>
+    <h3 id="productModalTitle">Новий товар</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+      <!-- Фото -->
+      <div style="grid-column:span 2">
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:8px">Фото товару (JPEG / PNG)</label>
+        <div style="display:flex;align-items:center;gap:14px;padding:14px;border:2px dashed var(--line);border-radius:var(--r-sm);background:var(--soft);cursor:pointer;transition:.2s" onclick="document.getElementById('pmImgFile').click()" id="pmDropZone">
+          <img id="pmImgPreview" src="" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:8px;display:none">
+          <div>
+            <p style="font-size:14px;font-weight:500;color:var(--acc);margin:0">Оберіть файл або перетягніть сюди</p>
+            <p style="font-size:12px;color:var(--mute);margin:4px 0 0">JPG, PNG до 5 MB</p>
+          </div>
+        </div>
+        <input type="file" id="pmImgFile" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="Admin.previewImg(this)">
+      </div>
+
+      <!-- UA fields -->
+      <div style="grid-column:span 2">
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Назва (UA) *</label>
+        <input id="pmTitle" type="text" placeholder="Назва товару" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:14px;background:var(--bg);outline:none">
+      </div>
+      <div style="grid-column:span 2">
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Назва (EN)</label>
+        <input id="pmTitleEn" type="text" placeholder="Product name" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:14px;background:var(--bg);outline:none">
+      </div>
+
+      <div>
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">SKU</label>
+        <input id="pmSku" type="text" placeholder="M-XXX" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:14px;background:var(--bg);outline:none">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Категорія</label>
+        <select id="pmCat" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:14px;background:var(--bg);outline:none">
+          <option value="decor">Декор для дому</option>
+          <option value="jewelry">Прикраси</option>
+          <option value="figures">Фігурки</option>
+          <option value="holidays">До свят</option>
+          <option value="print3d">3D-друк</option>
+          <option value="personal">Персональний подарунок</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Ціна (₴) *</label>
+        <input id="pmPrice" type="number" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:14px;background:var(--bg);outline:none">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Стара ціна (₴)</label>
+        <input id="pmOld" type="number" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:14px;background:var(--bg);outline:none">
+      </div>
+
+      <div>
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Бейдж</label>
+        <select id="pmBadge" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:14px;background:var(--bg);outline:none">
+          <option value="">Немає</option>
+          <option value="hit">Хіт</option>
+          <option value="new">Нове</option>
+          <option value="sale">Знижка</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Наявність</label>
+        <select id="pmStock" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:14px;background:var(--bg);outline:none">
+          <option value="in">В наявності</option>
+          <option value="order">Під замовлення</option>
+          <option value="out">Немає</option>
+        </select>
+      </div>
+
+      <div style="grid-column:span 2">
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Короткий опис (UA)</label>
+        <input id="pmShort" type="text" placeholder="Одне речення" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:14px;background:var(--bg);outline:none">
+      </div>
+      <div style="grid-column:span 2">
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Короткий опис (EN)</label>
+        <input id="pmShortEn" type="text" placeholder="Short description" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:14px;background:var(--bg);outline:none">
+      </div>
+      <div style="grid-column:span 2">
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Повний опис (UA)</label>
+        <textarea id="pmDesc" placeholder="Детальний опис товару..." style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:14px;background:var(--bg);outline:none;resize:vertical;min-height:80px"></textarea>
+      </div>
+      <div style="grid-column:span 2">
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Повний опис (EN)</label>
+        <textarea id="pmDescEn" placeholder="Full product description..." style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:14px;background:var(--bg);outline:none;resize:vertical;min-height:80px"></textarea>
+      </div>
+      <div style="grid-column:span 2">
+        <label style="font-size:12px;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px">Варіанти (через кому)</label>
+        <input id="pmOptions" type="text" placeholder="Колір 1, Колір 2" style="width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:14px;background:var(--bg);outline:none">
+      </div>
+    </div>
+    <div class="admin-modal-footer">
+      <button class="btn btn-ghost" onclick="Admin.closeProductModal()">Скасувати</button>
+      <button class="btn btn-primary" onclick="Admin.saveProduct()">Зберегти</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="js/images.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('adminDate').textContent =
+    new Date().toLocaleDateString('uk-UA', {weekday:'long', day:'numeric', month:'long'});
+  Admin.initLogin();
+});
+
+function exportOrders() {
+  const orders = Store.getOrders();
+  if (!orders.length) { showToast('Замовлень немає'); return; }
+  const rows = [['ID','Дата','Ім\'я','Телефон','Товари','Доставка','Оплата','Сума','Статус']];
+  orders.forEach(o => {
+    rows.push([
+      o.id,
+      new Date(o.date).toLocaleDateString('uk-UA'),
+      o.name, o.phone,
+      (o.items||[]).map(i => i.product?.title + '×' + i.qty).join('; '),
+      o.delivery, o.payment,
+      o.total,
+      o.status,
+    ]);
+  });
+  const csv = rows.map(r => r.map(v => '"' + String(v||'').replace(/"/g,'""') + '"').join(',')).join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'motty-orders-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  showToast('Експорт завантажено ✓');
+}
+
+Admin.previewImg = function(input){
+  if(!input.files||!input.files[0]) return;
+  const file = input.files[0];
+  if(file.size > 5*1024*1024){ showToast('Файл завеликий (макс 5 MB)'); return; }
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const prev = document.getElementById('pmImgPreview');
+    if(prev){ prev.src=e.target.result; prev.style.display='block'; }
+  };
+  reader.readAsDataURL(file);
+};
+
+function clearOrders() {
+  if (!confirm('Видалити всі замовлення? Цю дію не можна скасувати.')) return;
+  localStorage.removeItem('motty_orders');
+  Admin.renderDashboard();
+  showToast('Замовлення очищено');
+}
+</script>
+</body>
+</html>

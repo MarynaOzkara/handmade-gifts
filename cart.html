@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Кошик — Motty Handmade</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/shop.css">
+<link rel="stylesheet" href="css/cart.css">
+</head>
+<body>
+
+<div class="topbar">🎁 Безкоштовна доставка від <b>2 000 ₴</b></div>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a href="index.html" class="nav-logo">Motty<small>Handmade</small></a>
+    <ul class="nav-links">
+      <li><a href="index.html#catalog">Каталог</a></li>
+      <li><a href="index.html#motty-quiz">Замовити</a></li>
+      <li><a href="index.html#about">Про нас</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="cart.html" class="btn-icon" style="position:relative;text-decoration:none">
+        <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-count cart-count-badge" style="display:none">0</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Порожній кошик -->
+<div id="emptyCart" class="empty-cart" style="display:none">
+  <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+    <line x1="3" y1="6" x2="21" y2="6"/>
+    <path d="M16 10a4 4 0 01-8 0"/>
+  </svg>
+  <h2>Кошик порожній</h2>
+  <p>Оберіть щось особливе в нашому каталозі</p>
+  <a href="index.html" class="btn btn-primary">До каталогу</a>
+</div>
+
+<!-- Чекаут -->
+<main class="checkout-page">
+  <div class="wrap">
+    <h1 style="font-family:var(--ff-serif);font-size:32px;font-weight:500;margin-bottom:28px">Оформлення замовлення</h1>
+    <div class="checkout-grid" id="checkoutGrid">
+
+      <!-- Ліва колонка -->
+      <div>
+        <!-- Товари в кошику -->
+        <div class="checkout-section">
+          <div class="checkout-section-head">
+            <div class="checkout-section-num">1</div>
+            <h3>Ваше замовлення</h3>
+          </div>
+          <div class="checkout-section-body" id="cartItemsList"></div>
+        </div>
+
+        <!-- Контактні дані -->
+        <div class="checkout-section">
+          <div class="checkout-section-head">
+            <div class="checkout-section-num">2</div>
+            <h3>Контактні дані</h3>
+          </div>
+          <div class="checkout-section-body">
+            <div class="field-row">
+              <div class="field">
+                <label>Ім'я *</label>
+                <input id="fieldName" type="text" placeholder="Олена або Михайло">
+              </div>
+              <div class="field">
+                <label>Телефон *</label>
+                <input id="fieldPhone" type="tel" placeholder="+380 (__)  ___-__-__">
+              </div>
+            </div>
+            <div class="field">
+              <label>Telegram або Instagram (необов'язково)</label>
+              <input id="fieldTelegram" type="text" placeholder="@username">
+            </div>
+            <div class="field">
+              <label>Коментар до замовлення</label>
+              <textarea id="fieldComment" placeholder="Побажання щодо пакування, написи, особливі вимоги..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Доставка -->
+        <div class="checkout-section">
+          <div class="checkout-section-head">
+            <div class="checkout-section-num">3</div>
+            <h3>Спосіб доставки</h3>
+          </div>
+          <div class="checkout-section-body">
+            <div class="delivery-options" id="deliveryOptions"></div>
+            <div class="delivery-fields" id="deliveryFields"></div>
+          </div>
+        </div>
+
+        <!-- Оплата -->
+        <div class="checkout-section">
+          <div class="checkout-section-head">
+            <div class="checkout-section-num">4</div>
+            <h3>Спосіб оплати</h3>
+          </div>
+          <div class="checkout-section-body">
+            <div class="payment-options" id="paymentOptions"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Права колонка — підсумок -->
+      <div>
+        <div class="order-summary">
+          <h3>Підсумок</h3>
+          <div class="summary-items" id="summaryItems"></div>
+          <hr class="summary-divider">
+          <div class="summary-row">
+            <span>Товари:</span><span id="subtotalAmt"></span>
+          </div>
+          <div class="summary-row">
+            <span>Доставка:</span><span id="deliveryAmt"></span>
+          </div>
+          <div class="summary-row total">
+            <span>Разом:</span><span id="totalAmt"></span>
+          </div>
+          <div style="margin-top:20px">
+            <button class="btn btn-primary btn-block" id="submitBtn" onclick="CartPage.submit()">
+              Підтвердити замовлення →
+            </button>
+          </div>
+          <div class="guarantee-note">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Оплата після отримання або після фото готового виробу</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- Успішне замовлення -->
+<div id="successPage" class="success-page" style="display:none">
+  <div class="success-box">
+    <div class="success-icon">
+      <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+    </div>
+    <h2>Дякуємо за замовлення!</h2>
+    <p>Ваше замовлення <strong id="successOrderId"></strong> успішно прийнято.</p>
+    <p>Майстер зв'яжеться з вами найближчим часом для підтвердження та узгодження деталей.</p>
+    <p style="margin-top:12px">📱 <a href="https://t.me/MarusyaOzkara" style="color:var(--acc)">@MarusyaOzkara</a> · <a href="tel:+380971234567" style="color:var(--acc)">+380 97 123 45 67</a></p>
+    <div class="actions">
+      <a href="index.html" class="btn btn-outline">До каталогу</a>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="js/images.js"></script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/cart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  CartPage.init();
+  // Update nav cart badge
+  const count = Store.getCartCount();
+  document.querySelectorAll('.cart-count-badge').forEach(el => {
+    el.textContent = count;
+    el.style.display = count ? 'flex' : 'none';
+  });
+});
+</script>
+</body>
+</html>
