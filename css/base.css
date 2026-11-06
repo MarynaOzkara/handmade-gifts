@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap');
 
 :root {
-  --acc:       #6E4146;
+  --acc:       #633d49;
+  --acc-l:     #909B85;
   --acc-h:     #C89D8C;
   --acc-soft:  #F3E8ED;
   --acc-ink:   #FFFFFF;
@@ -68,7 +69,7 @@ ul{list-style:none}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
 /* ── Section label ── */
-.section-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);display:block;margin-bottom:10px}
+.section-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-l);display:block;margin-bottom:10px}
 
 /* ── Topbar ── */
 .topbar{background:var(--acc);color:rgba(255,255,255,.9);text-align:center;padding:9px 16px;font-size:13px}
@@ -77,9 +78,10 @@ ul{list-style:none}
 /* ── Nav ── */
 .nav{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:200;transition:box-shadow .3s}
 .nav.scrolled{box-shadow:0 2px 20px rgba(110,65,70,.10)}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;height:var(--nav-h);max-width:var(--max-w);margin:0 auto;padding:0 24px}
-.nav-logo{font-family:var(--ff-serif);font-size:22px;font-weight:600;color:var(--acc);display:flex;flex-direction:column;line-height:1.1}
-.nav-logo small{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-family:var(--ff-sans);font-weight:400}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:var(--nav-h);max-width:var(--max-w);margin:0 auto}
+.logo-link{display:flex;align-items:center;gap:4px}
+.logo-title{font-family:var(--ff-serif);font-size:32px;font-weight:600;color:var(--acc);display:flex;flex-direction:column;line-height:.9;letter-spacing:3%}
+.logo-title small{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc-l);font-family:var(--ff-sans);font-weight:400}
 .nav-links{display:flex;gap:32px}
 .nav-links a{font-size:14px;color:var(--mute);transition:.22s;padding-bottom:2px;border-bottom:1.5px solid transparent}
 .nav-links a:hover,.nav-links a.active{color:var(--acc);border-bottom-color:var(--acc)}
