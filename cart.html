@@ -162,12 +162,15 @@
 
 <div id="toast" class="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
 <script src="js/images.js"></script>
 <script src="js/data.js"></script>
 <script src="js/store.js"></script>
 <script src="js/cart.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  await MottyDB.init();
   CartPage.init();
   // Update nav cart badge
   const count = Store.getCartCount();

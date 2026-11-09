@@ -191,3 +191,16 @@ sheetsUrl: 'https://script.google.com/macros/s/ТВІЙ_ID/exec',
 
 > ⚠️ Після будь-яких змін у скрипті роби новий деплой (`Деплой → Керування деплоями → ✏️ редагувати → Нова версія`), інакше зміни не застосуються.
 
+
+## Supabase integration
+
+The storefront now uses Supabase for products, product images and orders. It remains a static site and can be hosted on GitHub Pages.
+
+### First launch
+1. Confirm the Supabase project has the `products`, `orders`, and `admin_users` tables, the `is_admin()` function, and the RLS policies created during setup.
+2. Confirm the public Storage bucket `product-images` exists and has public read access. Upload/delete policies should allow only authenticated admins.
+3. The administrator account must exist in Supabase Auth and its user ID must be present in `public.admin_users`.
+4. Open `admin.html`, sign in with that Supabase email and password. On the first successful admin login, the initial 14 catalog products and their images are copied to Supabase. Wait for the catalog to finish loading before leaving the page.
+5. Publish the whole folder to GitHub Pages. The project URL and publishable key are configured in `js/supabase.js`; the publishable key is intended for browser use and access is restricted by RLS.
+
+Never put a Supabase secret/service-role key, database password, or Telegram bot token in this static website. Order notifications to Telegram are not sent by the browser integration; orders are saved to the Supabase database and visible in the admin panel.

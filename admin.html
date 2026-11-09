@@ -8,54 +8,18 @@
 <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
-<script>
-// Run immediately (not DOMContentLoaded) for instant display
-(function(){
-  var auth;
-  try { auth = sessionStorage.getItem('motty_admin_auth'); } catch(e){}
-  if (auth === 'ok') {
-    document.addEventListener('DOMContentLoaded', function(){
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('appScreen').style.display = 'grid';
-      Admin.initLogin();
-    });
-  } else {
-    document.addEventListener('DOMContentLoaded', function(){
-      document.getElementById('loginScreen').style.display = 'flex';
-      document.getElementById('appScreen').style.display = 'none';
-      Admin.initLogin();
-    });
-  }
-})();
-</script>
+
 
 <!-- ═══ LOGIN ═══ -->
 <div id="loginScreen" class="admin-login" style="display:none">
-  <div class="admin-login-box">
+  <form class="admin-login-box" onsubmit="event.preventDefault();Admin.login()">
     <h2>Motty Admin</h2>
-    <p>Введіть PIN-код для входу</p>
-    <div class="admin-pin">
-      <div class="pin-dot" id="pd0"></div>
-      <div class="pin-dot" id="pd1"></div>
-      <div class="pin-dot" id="pd2"></div>
-      <div class="pin-dot" id="pd3"></div>
-    </div>
-    <div class="numpad">
-      <button class="num-key" onclick="Admin.pressNum('1')">1</button>
-      <button class="num-key" onclick="Admin.pressNum('2')">2</button>
-      <button class="num-key" onclick="Admin.pressNum('3')">3</button>
-      <button class="num-key" onclick="Admin.pressNum('4')">4</button>
-      <button class="num-key" onclick="Admin.pressNum('5')">5</button>
-      <button class="num-key" onclick="Admin.pressNum('6')">6</button>
-      <button class="num-key" onclick="Admin.pressNum('7')">7</button>
-      <button class="num-key" onclick="Admin.pressNum('8')">8</button>
-      <button class="num-key" onclick="Admin.pressNum('9')">9</button>
-      <button class="num-key del" onclick="Admin.pressBack()">⌫</button>
-      <button class="num-key" onclick="Admin.pressNum('0')">0</button>
-      <div></div>
-    </div>
-    <p style="font-size:12px;color:var(--mute);margin-top:16px">PIN за замовчуванням: 1234</p>
-  </div>
+    <p>Увійдіть за допомогою email та пароля</p>
+    <div class="field" style="margin:18px 0 10px"><label for="adminEmail">Email</label><input id="adminEmail" type="email" autocomplete="username" required placeholder="Ваш email"></div>
+    <div class="field" style="margin-bottom:16px"><label for="adminPassword">Пароль</label><input id="adminPassword" type="password" autocomplete="current-password" required placeholder="Пароль"></div>
+    <button class="btn btn-primary" type="submit" style="width:100%">Увійти</button>
+    <p id="loginError" style="font-size:12px;color:#b44;margin-top:12px"></p>
+  </form>
 </div>
 
 <!-- ═══ APP ═══ -->
@@ -207,7 +171,6 @@
           <div class="settings-card">
             <h4>Загальні налаштування</h4>
             <div class="field"><label>Безкоштовна доставка від (₴)</label><input id="settingFreeFrom" type="number"></div>
-            <div class="field"><label>PIN-код адмінки</label><input id="settingPin" type="text" maxlength="4" placeholder="4 цифри"></div>
           </div>
           <div class="settings-card">
             <h4>Дані</h4>
@@ -328,6 +291,8 @@
 
 <div id="toast" class="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
 <script src="js/images.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/data.js"></script>

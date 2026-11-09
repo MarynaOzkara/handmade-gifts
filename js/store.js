@@ -6,7 +6,7 @@ const Store = (() => {
   function addToCart(productId, option=''){
     const cart=getCart(), key=productId+(option?':'+option:''), ex=cart.find(i=>i.key===key);
     if(ex){ ex.qty++; } else {
-      const p=MOTTY_PRODUCTS.find(p=>p.id===productId); if(!p) return;
+      const p=((window.MOTTY_REMOTE_PRODUCTS&&window.MOTTY_REMOTE_PRODUCTS.length)?window.MOTTY_REMOTE_PRODUCTS:MOTTY_PRODUCTS).find(p=>p.id===productId); if(!p) return;
       cart.push({key,id:productId,option,qty:1});
     }
     saveCart(cart); showToast(t('added_cart'));
@@ -18,9 +18,9 @@ const Store = (() => {
     item.qty=qty; saveCart(cart);
   }
   function clearCart(){ saveCart([]); }
-  function getCartTotal(){ return getCart().reduce((s,i)=>{ const p=MOTTY_PRODUCTS.find(p=>p.id===i.id); return s+(p?p.price*i.qty:0); },0); }
+  function getCartTotal(){ return getCart().reduce((s,i)=>{ const p=((window.MOTTY_REMOTE_PRODUCTS&&window.MOTTY_REMOTE_PRODUCTS.length)?window.MOTTY_REMOTE_PRODUCTS:MOTTY_PRODUCTS).find(p=>p.id===i.id); return s+(p?p.price*i.qty:0); },0); }
   function getCartCount(){ return getCart().reduce((s,i)=>s+i.qty,0); }
-  function getCartItems(){ return getCart().map(i=>{ const p=MOTTY_PRODUCTS.find(p=>p.id===i.id); return{...i,product:p}; }).filter(i=>i.product); }
+  function getCartItems(){ return getCart().map(i=>{ const p=((window.MOTTY_REMOTE_PRODUCTS&&window.MOTTY_REMOTE_PRODUCTS.length)?window.MOTTY_REMOTE_PRODUCTS:MOTTY_PRODUCTS).find(p=>p.id===i.id); return{...i,product:p}; }).filter(i=>i.product); }
 
   function getWish(){ try{return JSON.parse(localStorage.getItem(WISH_KEY))||[];}catch{return[];} }
   function toggleWish(id){
@@ -30,11 +30,11 @@ const Store = (() => {
     return idx<0;
   }
   function isWished(id){ return getWish().includes(id); }
-  function getWishItems(){ return getWish().map(id=>MOTTY_PRODUCTS.find(p=>p.id===id)).filter(Boolean); }
+  function getWishItems(){ return getWish().map(id=>((window.MOTTY_REMOTE_PRODUCTS&&window.MOTTY_REMOTE_PRODUCTS.length)?window.MOTTY_REMOTE_PRODUCTS:MOTTY_PRODUCTS).find(p=>p.id===id)).filter(Boolean); }
 
-  function getOrders(){ try{return JSON.parse(localStorage.getItem(ORDERS_KEY))||[];}catch{return[];} }
+  function getOrders(){ return window.MOTTY_DB_ORDERS || []; }
   function saveOrder(o){ const orders=getOrders(); o.id='ORD-'+Date.now(); o.date=new Date().toISOString(); o.status='new'; orders.unshift(o); localStorage.setItem(ORDERS_KEY,JSON.stringify(orders)); return o; }
-  function updateOrderStatus(id,status){ const orders=getOrders(), o=orders.find(o=>o.id===id); if(o){ o.status=status; localStorage.setItem(ORDERS_KEY,JSON.stringify(orders)); } }
+  async function updateOrderStatus(id,status){ await MottyDB.updateOrder(id,status); window.MOTTY_DB_ORDERS=MottyDB.orders(); }
 
   async function sendToTelegram(order){
     const {tgToken,tgChat}=MOTTY_SETTINGS; if(!tgToken||!tgChat) return false;
@@ -50,9 +50,8 @@ const Store = (() => {
     try{ await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); return true; }catch{ return false; }
   }
   async function submitOrder(order){
-    const saved=saveOrder(order);
-    await Promise.allSettled([sendToTelegram(saved),sendToSheets(saved)]);
-    return saved;
+    const saved=await MottyDB.createOrder(order);
+    return {order:saved};
   }
 
   const _l={};

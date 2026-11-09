@@ -32,7 +32,7 @@ const Catalog = (() => {
   }
 
   function _initPriceRange(){
-    const prices = MOTTY_PRODUCTS.map(p=>p.price);
+    const prices = _allProds().map(p=>p.price);
     priceMin = Math.min(...prices); priceMax = Math.max(...prices);
     const mn=document.getElementById('priceMin'), mx=document.getElementById('priceMax');
     if(mn){ mn.value=priceMin; mn.min=priceMin; mn.max=priceMax; }
@@ -53,8 +53,8 @@ const Catalog = (() => {
     renderSidebar(); renderProducts();
   }
 
-  function _getCustomProds(){ try{return JSON.parse(localStorage.getItem('motty_custom_products'))||[];}catch{return[];} }
-  function _allProds(){ return [...MOTTY_PRODUCTS,..._getCustomProds()]; }
+  function _getCustomProds(){ return window.MOTTY_REMOTE_PRODUCTS || []; }
+  function _allProds(){ const remote=_getCustomProds(); return remote.length ? remote : MOTTY_PRODUCTS; }
   function _getFiltered(){
     const ALL=_allProds();
     let list = currentCat==='all' ? [...ALL] : ALL.filter(p=>p.cat===currentCat);
@@ -129,7 +129,7 @@ const Catalog = (() => {
   }
 
   function quickAdd(id){
-    const p=MOTTY_PRODUCTS.find(p=>p.id===id); if(!p) return;
+    const p=_allProds().find(p=>p.id===id); if(!p) return;
     if(p.options&&p.options.length) { openModal(id); return; }
     Store.addToCart(id); openCartDrawer();
   }
@@ -149,7 +149,7 @@ const Catalog = (() => {
     document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
   }
   function openModal(id){
-    const p=MOTTY_PRODUCTS.find(p=>p.id===id); if(!p) return;
+    const p=_allProds().find(p=>p.id===id); if(!p) return;
     currentModal=p;
     const disc=p.old>0?Math.round((1-p.price/p.old)*100):0;
     _set('modalImg',p.images[0],'src');

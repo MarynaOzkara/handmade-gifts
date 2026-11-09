@@ -198,7 +198,9 @@ const CartPage = (() => {
     btn.textContent = 'Відправляємо...';
     btn.disabled = true;
 
-    const { order: saved } = await Store.submitOrder(order);
+    let saved;
+    try { const result=await Store.submitOrder(order); saved=result.order; }
+    catch(e){ btn.disabled=false; btn.textContent='Підтвердити замовлення'; showToast('Не вдалося відправити замовлення. Перевірте з’єднання та спробуйте ще раз.',5000); console.error(e); return; }
     Store.clearCart();
 
     // Показати success

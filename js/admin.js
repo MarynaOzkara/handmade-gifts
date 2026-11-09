@@ -1,30 +1,25 @@
 'use strict';
 const Admin = (() => {
-  let currentTab = 'dashboard', editingId = null, pinEntered = '';
-  const PIN_KEY = 'motty_admin_auth', PROD_KEY = 'motty_custom_products';
+  let currentTab = 'dashboard', editingId = null;
 
-  // ── PIN ──
-  function initLogin(){
-    if(isAuthed()) showApp();
+  // ── Supabase Auth ──
+  async function initLogin(){
+    document.getElementById('loginScreen').style.display='flex';
+    document.getElementById('appScreen').style.display='none';
+    try { if(await MottyDB.restoreSession()) await showApp(); }
+    catch(e){ console.error(e); }
   }
-  function isAuthed(){ return sessionStorage.getItem(PIN_KEY)==='ok'; }
-  function pressNum(n){
-    if(pinEntered.length>=4) return;
-    pinEntered+=n; _dots();
-    if(pinEntered.length===4){
-      if(pinEntered===MOTTY_SETTINGS.adminPin){
-        sessionStorage.setItem(PIN_KEY,'ok');
-        setTimeout(()=>showApp(),300);
-      } else {
-        showToast('Невірний PIN ❌');
-        setTimeout(()=>{ pinEntered=''; _dots(); },500);
-      }
-    }
+  async function login(){
+    const email=document.getElementById('adminEmail').value.trim();
+    const password=document.getElementById('adminPassword').value;
+    const error=document.getElementById('loginError'); error.textContent='';
+    try { await MottyDB.signIn(email,password); await showApp(); }
+    catch(e){ error.textContent=e.message||'Не вдалося увійти'; }
   }
-  function pressBack(){ pinEntered=pinEntered.slice(0,-1); _dots(); }
-  function _dots(){ document.querySelectorAll('.pin-dot').forEach((d,i)=>d.classList.toggle('filled',i<pinEntered.length)); }
-  function logout(){ sessionStorage.removeItem(PIN_KEY); location.reload(); }
-  function showApp(){
+  async function logout(){ await MottyDB.signOut(); location.reload(); }
+  async function showApp(){
+    try { await MottyDB.seed(); await MottyDB.loadOrders(); window.MOTTY_DB_ORDERS=MottyDB.orders(); }
+    catch(e){ showToast('Не вдалося завантажити замовлення: '+e.message,5000); }
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('appScreen').style.display='grid';
     switchTab('dashboard');
@@ -88,16 +83,14 @@ const Admin = (() => {
         </select></td>
       </tr>`).join('')||'<tr><td colspan="8" style="text-align:center;color:var(--mute);padding:24px">Замовлень не знайдено</td></tr>';
   }
-  function changeStatus(id,status){
-    Store.updateOrderStatus(id,status);
-    renderOrders(); renderDashboard(); showToast('Статус оновлено ✓');
+  async function changeStatus(id,status){
+    try { await Store.updateOrderStatus(id,status); renderOrders(); renderDashboard(); showToast('Статус оновлено ✓'); }
+    catch(e){showToast('Помилка: '+e.message,5000);}
   }
 
   // ── PRODUCTS ──
-  function _getCustom(){ try{return JSON.parse(localStorage.getItem(PROD_KEY))||[];}catch{return[];} }
-  function _allProducts(){
-    return [...MOTTY_PRODUCTS.map(p=>({...p,_custom:false})),..._getCustom().map(p=>({...p,_custom:true}))];
-  }
+  function _getCustom(){ return window.MOTTY_REMOTE_PRODUCTS || []; }
+  function _allProducts(){ return _getCustom().map(p=>({...p,_custom:true})); }
   function renderProducts(filter=''){
     let prods=_allProducts();
     if(filter) prods=prods.filter(p=>p.title.toLowerCase().includes(filter.toLowerCase())||p.sku?.includes(filter));
@@ -111,10 +104,8 @@ const Admin = (() => {
         <td>${fmt(p.price)}${p.old?`<br><small style="color:var(--mute);text-decoration:line-through">${fmt(p.old)}</small>`:''}</td>
         <td><span class="status ${p.stock==='in'?'status-done':'status-process'}">${p.stock==='in'?'В наявності':'Під замовлення'}</span></td>
         <td>
-          ${p._custom?`
-            <button class="td-action" onclick="Admin.editProduct('${p.id}')">Редагувати</button>
-            <button class="td-action del" onclick="Admin.deleteProduct('${p.id}')">Видалити</button>
-          `:'<span style="font-size:12px;color:var(--mute)">вбудований</span>'}
+          <button class="td-action" onclick="Admin.editProduct('${p.id}')">Редагувати</button>
+          <button class="td-action del" onclick="Admin.deleteProduct('${p.id}')">Видалити</button>
         </td>
       </tr>`).join('');
   }
@@ -144,57 +135,31 @@ const Admin = (() => {
   }
   function closeProductModal(){ document.getElementById('productModal').classList.remove('open'); editingId=null; }
 
-  function saveProduct(){
-    const custom=_getCustom();
-    // Get image - either uploaded or existing
+  async function saveProduct(){
     const imgInput=document.getElementById('pmImgFile');
-    const existingImg=document.getElementById('pmImgPreview');
-    let imageData=existingImg?.src&&existingImg.src.startsWith('data:')?existingImg.src:
-                  (editingId?(_allProducts().find(p=>p.id===editingId)?.images||[]):[])[0]||'';
-
-    function _finish(imgSrc){
-      const prod={
-        id: editingId||'cp-'+Date.now(),
-        title: document.getElementById('pmTitle').value.trim(),
-        title_en: document.getElementById('pmTitleEn').value.trim(),
-        sku: document.getElementById('pmSku').value.trim(),
-        price: +document.getElementById('pmPrice').value||0,
-        old: +document.getElementById('pmOld').value||0,
-        short: document.getElementById('pmShort').value.trim(),
-        short_en: document.getElementById('pmShortEn').value.trim(),
-        desc: document.getElementById('pmDesc').value.trim(),
-        desc_en: document.getElementById('pmDescEn').value.trim(),
-        badge: document.getElementById('pmBadge').value,
-        stock: document.getElementById('pmStock').value,
-        cat: document.getElementById('pmCat').value,
-        options: document.getElementById('pmOptions').value.split(',').map(s=>s.trim()).filter(Boolean),
-        images: imgSrc?[imgSrc]:[],
-        reviews:0, rating:5.0, left:0,
-        addedAt: editingId?((_allProducts().find(p=>p.id===editingId)?.addedAt)||Date.now()):Date.now(),
-      };
-      if(!prod.title||!prod.price){ showToast('Заповніть назву і ціну ❗'); return; }
-      if(editingId){ const idx=custom.findIndex(p=>p.id===editingId); if(idx>=0) custom[idx]=prod; else custom.push(prod); }
-      else custom.push(prod);
-      localStorage.setItem(PROD_KEY,JSON.stringify(custom));
-      closeProductModal(); renderProducts(); showToast('Товар збережено ✓');
-    }
-
-    // Handle file upload
-    if(imgInput&&imgInput.files&&imgInput.files[0]){
-      const reader=new FileReader();
-      reader.onload=function(e){ _finish(e.target.result); };
-      reader.readAsDataURL(imgInput.files[0]);
-    } else {
-      _finish(imageData);
-    }
+    const old=_allProducts().find(p=>p.id===editingId);
+    const prod={
+      id:editingId||'p-'+Date.now(), title:document.getElementById('pmTitle').value.trim(),
+      title_en:document.getElementById('pmTitleEn').value.trim(), sku:document.getElementById('pmSku').value.trim(),
+      price:+document.getElementById('pmPrice').value||0, old:+document.getElementById('pmOld').value||0,
+      short:document.getElementById('pmShort').value.trim(), short_en:document.getElementById('pmShortEn').value.trim(),
+      desc:document.getElementById('pmDesc').value.trim(), desc_en:document.getElementById('pmDescEn').value.trim(),
+      badge:document.getElementById('pmBadge').value, stock:document.getElementById('pmStock').value,
+      cat:document.getElementById('pmCat').value, options:document.getElementById('pmOptions').value.split(',').map(x=>x.trim()).filter(Boolean),
+      images:old?.images||[], reviews:old?.reviews||0, rating:old?.rating||5, left:old?.left||0, addedAt:old?.addedAt||Date.now()
+    };
+    if(!prod.title||!prod.price){showToast('Заповніть назву і ціну ❗');return;}
+    const btn=document.querySelector('#productModal .btn-primary'); if(btn){btn.disabled=true;btn.textContent='Збереження…';}
+    try { await MottyDB.saveProduct(prod,imgInput?.files?.[0]||null); closeProductModal(); renderProducts(); renderDashboard(); showToast('Товар збережено в базі ✓'); }
+    catch(e){showToast('Помилка збереження: '+e.message,5000);}
+    finally{if(btn){btn.disabled=false;btn.textContent='Зберегти';}}
   }
 
   function editProduct(id){ openProductModal(id); }
-  function deleteProduct(id){
+  async function deleteProduct(id){
     if(!confirm('Видалити товар?')) return;
-    const custom=_getCustom().filter(p=>p.id!==id);
-    localStorage.setItem(PROD_KEY,JSON.stringify(custom));
-    renderProducts(); showToast('Товар видалено');
+    try { await MottyDB.deleteProduct(id); renderProducts(); showToast('Товар видалено'); }
+    catch(e){showToast('Не вдалося видалити: '+e.message,5000);}
   }
 
   // ── SETTINGS ──
@@ -206,7 +171,6 @@ const Admin = (() => {
     document.getElementById('settingTgToken').value=MOTTY_SETTINGS.tgToken;
     document.getElementById('settingTgChat').value=MOTTY_SETTINGS.tgChat;
     document.getElementById('settingFreeFrom').value=MOTTY_SETTINGS.freeFrom;
-    document.getElementById('settingPin').value=MOTTY_SETTINGS.adminPin;
   }
   function saveSettings(){ showToast('Налаштування збережено ✓'); }
 
@@ -217,7 +181,7 @@ const Admin = (() => {
   function searchOrders(q){ renderOrders(q); }
   function searchProducts(q){ renderProducts(q); }
 
-  return { initLogin, pressNum, pressBack, logout, switchTab, changeStatus,
+  return { initLogin, login, logout, switchTab, changeStatus,
     renderDashboard, renderOrders, renderProducts,
     openProductModal, closeProductModal, saveProduct, editProduct, deleteProduct,
     renderSettings, saveSettings, searchOrders, searchProducts };
