@@ -4,8 +4,12 @@
 const I18N = {
   ua: {
     nav_catalog:    'Каталог',
-    nav_order:      'Замовити',
+    nav_custom:      'Індивідуально',
+    nav_gifts:     'Ідеї подарунку',
     nav_about:      'Про нас',
+    nav_faq:        'Питання',
+    nav_cart:       'Кошик',
+    nav_admin:      'Керування магазином',
     topbar_delivery: 'Безкоштовна доставка від <b>2 000 ₴</b>',
     topbar_handmade: 'Ручна робота в одному екземплярі',
     topbar_custom: 'Зробимо на замовлення',
@@ -111,8 +115,12 @@ const I18N = {
   },
   en: {
     nav_catalog:    'Catalog',
-    nav_order:      'Order',
+    nav_custom:      'Custom',
+    nav_gifts:     'Gift ideas',
     nav_about:      'About',
+    nav_faq:        'FAQ',
+    nav_cart:       'Cart',
+    nav_admin:      'Admin',
     topbar_delivery: 'Free delivery from <b>2 000 ₴</b>',
     topbar_handmade: 'Handmade in one copy',
     topbar_custom: 'Made to order',

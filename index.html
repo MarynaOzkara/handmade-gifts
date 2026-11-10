@@ -42,17 +42,20 @@
         Motty<small>Handmade</small>
       </p>
       </a>
-      
       <ul class="nav-links">
         <li><a href="#catalog" data-i18n="nav_catalog">Каталог</a></li>
-        <li><a href="#order-quiz">Індивідуально</a></li>
-        <li><a href="#gift-picker" data-i18n="nav_order">Замовити</a></li>
+        <li><a href="#order-quiz" data-i18n="nav_custom">Індивідуально</a></li>
+        <li><a href="#gift-picker" data-i18n="nav_gifts">Ідеї подарунку</a></li>
         <li><a href="#about" data-i18n="nav_about">Про нас</a></li>
+        <li><a href="#faq" data-i18n="nav_faq">Питання</a></li>
       </ul>
       <div class="nav-actions">
         <!-- Lang -->
-        <button class="lang-btn active" data-lang="ua" onclick="setLang('ua')">UA</button>
-        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+         <div class="lang-switcher">
+             <button class="lang-btn active" data-lang="ua" onclick="setLang('ua')">UA</button>
+             <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+         </div>
+        
         <!-- Wish -->
         <button class="nav-icon-btn" onclick="Catalog.openWishDrawer()" aria-label="Вибране">
           <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -77,12 +80,11 @@
     </button>
     <nav>
       <a href="#catalog" onclick="closeMobile()" data-i18n="nav_catalog">Каталог</a>
-      <a href="#order-quiz" onclick="closeMobile()">Індивідуальне замовлення</a>
-      <a href="#gift-picker" onclick="closeMobile()" data-i18n="nav_order">Замовити</a>
+      <a href="#order-quiz" data-i18n="nav_custom" onclick="closeMobile()">Індивідуальне замовлення</a>
+      <a href="#gift-picker" onclick="closeMobile()" data-i18n="nav_gifts">Ідеї подарунку</a>
       <a href="#about" onclick="closeMobile()" data-i18n="nav_about">Про нас</a>
-      <a href="#faq">FAQ</a>
-      <a href="cart.html">Кошик</a>
-      <a href="admin.html">Admin</a>
+      <a href="#faq" data-i18n="nav_faq">Питання</a>
+      <a href="cart.html" data-i18n="nav_cart">Кошик</a>
     </nav>
     <div class="mobile-lang">
       <button class="lang-btn active" data-lang="ua" onclick="setLang('ua');closeMobile()">🇺🇦 UA</button>
@@ -92,7 +94,7 @@
 </header>  
 <main>
   <!-- ═══ ABOUT / HERO ═══ -->
-<section class="hero-about" id="about">
+<section class="hero-about">
   <div class="hero-wrap">
     <div class="hero-text">
       <span class="section-label" data-i18n="hero_label">Майстерня Motty</span>
@@ -123,7 +125,7 @@
 </section>
 
 <!-- HERO SLIDER -->
-<section id="hero-slider" style="padding:20px 0 0;background:var(--bg)">
+<section id="hero-slider" class="hero-slider">
   <div class="wrap">
     <div id="hSliderWrap" style="position:relative;border-radius:20px;overflow:hidden;min-height:320px">
       <!-- Slides -->
@@ -236,9 +238,6 @@
     <div id="newProdsSlider" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;cursor:pointer"></div>
   </div>
 </section>
-
-
-
 <!-- ═══ CATALOG ═══ -->
 <section class="catalog-section" id="catalog">
   <div class="wrap">
@@ -314,7 +313,6 @@
     </div>
   </div>
 </section>
-
 <!-- ═══ GIFT PICKER ═══ -->
 <section class="gift-picker" id="gift-picker">
   <div class="wrap gift-picker-inner">
@@ -340,7 +338,6 @@
     </div>
   </div>
 </section>
-
 <!-- Quiz modal -->
 <div class="quiz-overlay" id="quizOverlay" onclick="handleQuizOverlayClick(event)">
   <div class="quiz-box">
@@ -389,7 +386,6 @@
     </div>
   </div>
 </div>
-
 <!-- ═══ PRODUCT MODAL ═══ -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-box">
@@ -425,7 +421,6 @@
     </button>
   </div>
 </div>
-
 <!-- ═══ CART DRAWER ═══ -->
 <div class="drawer-overlay" id="cartOverlay"></div>
 <div class="drawer" id="cartDrawer">
@@ -438,7 +433,6 @@
   <div class="drawer-body" id="cartBody"></div>
   <div class="drawer-foot" id="cartFoot" style="display:none"></div>
 </div>
-
 <!-- ═══ WISH DRAWER ═══ -->
 <div class="drawer-overlay" id="wishOverlay"></div>
 <div class="drawer" id="wishDrawer">
@@ -450,10 +444,8 @@
   </div>
   <div class="drawer-body" id="wishBody"></div>
 </div>
-
-
 <!-- MASTERS SECTION -->
-<section id="masters" style="padding:80px 0;background:var(--soft)">
+<section  id="about" class="about">
   <div class="wrap">
     <div style="text-align:center;margin-bottom:48px" class="reveal">
       <span class="section-label">Наша команда</span>
@@ -672,7 +664,7 @@
       <div class="footer-col">
         <h5 data-i18n="footer_contacts">Контакти</h5>
         <a href="tel:+380971234567">+380 97 123 45 67</a>
-        <a href="https://t.me/MarusyaOzkara" target="_blank">@MarusyaOzkara</a>
+        <a href="https://t.me/Motty_shop" target="_blank">@Motty_shop</a>
         <a href="https://instagram.com/Motty_handmade" target="_blank">@Motty_handmade</a>
         <a href="mailto:info@motty-handmade.com.ua">info@motty-handmade.com.ua</a>
         <a>м. Київ · щодня 9:00–20:00</a>
@@ -680,6 +672,7 @@
     </div>
     <div class="footer-bottom">
       <p data-i18n="footer_copy">© 2024 Motty Handmade. Усі права захищено.</p>
+      <a href="admin.html" data-i18n="nav_admin">Керування магазином</a>
       <p data-i18n="footer_tag">Авторські вироби ручної роботи</p>
     </div>
   </div>

@@ -112,7 +112,7 @@ const Catalog = (() => {
       </div>
       <div class="card-body">
         <div class="card-cat">${catName(p.cat)}</div>
-        <div class="card-title">${currentLang==='en'?(p.title_en||t(p.id+'_title')!==p.id+'_title'?t(p.id+'_title'):p.title):p.title}</div>
+        <div class="card-title">${currentLang==='en'?(p.title_en||(t(p.id+'_title')!==p.id+'_title'?t(p.id+'_title'):p.title)):p.title}</div>
         <div class="card-short">${currentLang==='en'?(p.short_en||(t(p.id+'_short')!==p.id+'_short'?t(p.id+'_short'):p.short)):p.short}</div>
         ${stockHtml}
         <div class="card-footer" style="margin-top:10px">
