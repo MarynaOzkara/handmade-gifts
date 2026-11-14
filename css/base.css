@@ -214,8 +214,10 @@ ul{list-style:none}
   .footer-bottom{flex-direction:column;gap:10px;text-align:center}
   .field-row{grid-template-columns:1fr}
   .drawer{width:100%;right:-100%}
+  .nav-inner{padding:0 16px}
 }
 @media(max-width:480px){
   .footer-grid{grid-template-columns:1fr}
   .wrap{padding:0 16px}
+  .nav-inner{padding:0 16px}
 }
