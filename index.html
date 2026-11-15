@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Motty Handmade — Авторські подарунки</title>
-<link rel="shortcut icon" href="./assets/logo.svg" type="image/svg+xml">
+<link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/shop.css">
 </head>
@@ -126,11 +126,11 @@
 
 <!-- HERO SLIDER -->
 <section id="hero-slider" class="hero-slider">
-  <div class="wrap">
-    <div id="hSliderWrap" style="position:relative;border-radius:20px;overflow:hidden;min-height:320px">
+  <div class="slider-wraps">
+    <div id="hSliderWrap" class="slider">
       <!-- Slides -->
-      <div class="h-slide h-slide-active" style="background:linear-gradient(135deg,#f8e8ed 0%,#f0d4e0 100%)">
-        <div style="display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:40px 48px;min-height:320px;gap:24px">
+      <div class="slide grad1 on">
+        <div style="display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:40px 48px;gap:24px">
           <div>
             <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.7);border-radius:50px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--acc);margin-bottom:16px">
               <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
@@ -157,8 +157,8 @@
         </div>
       </div>
 
-      <div class="h-slide" style="background:linear-gradient(135deg,#d4f0e8 0%,#b8e8d8 100%)">
-        <div style="display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:40px 48px;min-height:320px;gap:24px">
+      <div class="slide grad2">
+        <div style="display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:40px 48px;gap:24px">
           <div>
             <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.7);border-radius:50px;padding:5px 12px;font-size:12px;font-weight:600;color:#2a7a5a;margin-bottom:16px">
               <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
@@ -185,8 +185,8 @@
         </div>
       </div>
 
-      <div class="h-slide" style="background:linear-gradient(135deg,#e8e0f4 0%,#d4c8ec 100%)">
-        <div style="display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:40px 48px;min-height:320px;gap:24px">
+      <div class="slide grad3">
+        <div style="display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:40px 48px;gap:24px">
           <div>
             <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.7);border-radius:50px;padding:5px 12px;font-size:12px;font-weight:600;color:#5a3a9a;margin-bottom:16px">
               <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -932,14 +932,14 @@ function oqSubmit(){
 
 // ── HERO SLIDER ──
 (function(){
-  var slides = document.querySelectorAll('.h-slide');
+  var slides = document.querySelectorAll('.slide');
   var dots   = document.querySelectorAll('.h-dot');
   var cur = 0, timer;
   function go(n){
-    slides[cur].classList.remove('h-slide-active');
+    slides[cur].classList.remove('on');
     dots[cur].classList.remove('h-dot-a');
     cur = (n + slides.length) % slides.length;
-    slides[cur].classList.add('h-slide-active');
+    slides[cur].classList.add('on');
     dots[cur].classList.add('h-dot-a');
   }
   window.hSlide = function(d){ go(cur+d); resetTimer(); };

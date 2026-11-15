@@ -18,6 +18,11 @@
   --bad:       #B03030;
   --bad-soft:  #FFE8E8;
   --warn:      #C47A2A;
+  --grad1: linear-gradient(125deg, #f8e8ed 0%, #f0d4e0 55%, #e8c0d3 100%);
+  --grad2: linear-gradient(125deg, #d8e0d8 0%, #c3d3c3 55%, #a1ab97 100%);
+  --grad3: linear-gradient(125deg, #e4d9e8 0%, #c8abd1 55%, #cfaeda 100%);
+  --grad4: linear-gradient(125deg, #d8eaf7 0%, #c5ddef 55%, #a9cae3 100%);
+  --grad5: linear-gradient(125deg, #fce3c8 0%, #e3bd99 55%, #d4a16f 100%);
   --r:         12px;
   --r-sm:      8px;
   --shadow:    0 2px 20px rgba(110,65,70,.10);
@@ -53,7 +58,7 @@ ul{list-style:none}
 .btn-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--line);transition:.22s var(--ease)}
 .btn-icon:hover{border-color:var(--acc);color:var(--acc)}
 .btn-block{width:100%;justify-content:center}
-.highlight{background:#E6C6CD;color:var(--ink2);padding:0 4px;border-radius:4px}
+.highlight{background:#E8C4A4;color:var(--ink2);padding:0 4px;border-radius:6px}
 
 /* ── Badges ── */
 .badge{display:inline-block;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:500}
