@@ -18,7 +18,9 @@
   --bad:       #B03030;
   --bad-soft:  #FFE8E8;
   --warn:      #C47A2A;
-  --grad1: linear-gradient(125deg, #f8e8ed 0%, #f0d4e0 55%, #e8c0d3 100%);
+  --sun:       #f9d988;
+  --sun-ink:   #2c1a1f;
+  --grad1: linear-gradient(125deg, #f8e8ed 0%, #f0d4e0 55%, #e3b3ca 100%);
   --grad2: linear-gradient(125deg, #d8e0d8 0%, #c3d3c3 55%, #a1ab97 100%);
   --grad3: linear-gradient(125deg, #e4d9e8 0%, #c8abd1 55%, #cfaeda 100%);
   --grad4: linear-gradient(125deg, #d8eaf7 0%, #c5ddef 55%, #a9cae3 100%);
