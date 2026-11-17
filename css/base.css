@@ -20,12 +20,12 @@
   --warn:      #C47A2A;
   --sun:       #f9d988;
   --sun-ink:   #2c1a1f;
-  --grad1: linear-gradient(125deg, #f8e8ed 0%, #f0d4e0 55%, #e3b3ca 100%);
-  --grad2: linear-gradient(125deg, #d8e0d8 0%, #c3d3c3 55%, #a1ab97 100%);
-  --grad3: linear-gradient(125deg, #e4d9e8 0%, #c8abd1 55%, #cfaeda 100%);
+  --grad1: linear-gradient(125deg, #f8e8ed 0%, #f0d4e0 55%, #d7a1bb 100%);
+  --grad2: linear-gradient(125deg, #eef5ee 0%, #c3d3c3 55%, #a1ab97 100%);
+  --grad3: linear-gradient(125deg, #f5eef8 0%, #dbbee5 55%, #cfaeda 100%);
   --grad4: linear-gradient(125deg, #d8eaf7 0%, #c5ddef 55%, #a9cae3 100%);
   --grad5: linear-gradient(125deg, #fce3c8 0%, #e3bd99 55%, #d4a16f 100%);
-  --r:         12px;
+  --r:         22px;
   --r-sm:      8px;
   --shadow:    0 2px 20px rgba(110,65,70,.10);
   --shadow-lg: 0 20px 60px rgba(110,65,70,.18);
