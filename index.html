@@ -275,25 +275,10 @@
 <!-- ═══ CATALOG ═══ -->
 <section class="catalog-section" id="catalog">
   <div class="wrap">
-    <!-- Mobile filter btn -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-      <button class="filter-toggle-btn" onclick="Catalog.openMobileFilter()">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-        Фільтри
-      </button>
-      <select class="sort-select" onchange="Catalog.setSort(this.value)" style="display:none" id="mobileSortSelect">
-        <option value="pop" data-i18n="sort_pop">Популярні</option>
-        <option value="new" data-i18n="sort_new">Новинки</option>
-        <option value="asc" data-i18n="sort_asc">Від дешевих</option>
-        <option value="desc" data-i18n="sort_desc">Від дорогих</option>
-        <option value="sale" data-i18n="sort_sale">Найбільша знижка</option>
-      </select>
-    </div>
-
     <div class="catalog-layout">
       <!-- Sidebar -->
       <aside class="catalog-sidebar" id="catalogSidebar">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div class="mob-filter-btn">
           <div class="sidebar-title">Фільтри</div>
           <button onclick="Catalog.closeMobileFilter()" style="background:none;border:none;color:var(--mute);font-size:22px;cursor:pointer;display:none" class="mobile-sidebar-close">×</button>
         </div>
@@ -325,13 +310,26 @@
 
         <button class="sidebar-reset" onclick="Catalog.resetFilters()" data-i18n="reset_filters">Скинути фільтри</button>
       </aside>
-
       <!-- Main -->
       <div class="catalog-main">
         <div class="catalog-toolbar">
-          <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
-            <h2 id="catalogTitle" style="font-family:var(--ff-serif);font-size:28px;font-weight:500">Каталог</h2>
-            <span id="catalogCount" style="font-size:14px;color:var(--mute)"></span>
+          <div class="cat-title-wrap">
+            <h2 id="catalogTitle">Каталог</h2>
+            <small id="catalogCount"></small>
+          </div>
+          <!-- Mobile filter btn -->
+          <div class="catalog-mobile-controls">
+            <button class="filter-toggle-btn" onclick="Catalog.openMobileFilter()">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+              Фільтри
+            </button>
+            <select class="sort-select" onchange="Catalog.setSort(this.value)" id="mobileSortSelect">
+              <option value="pop" data-i18n="sort_pop">Популярні</option>
+              <option value="new" data-i18n="sort_new">Новинки</option>
+              <option value="asc" data-i18n="sort_asc">Від дешевих</option>
+              <option value="desc" data-i18n="sort_desc">Від дорогих</option>
+              <option value="sale" data-i18n="sort_sale">Найбільша знижка</option>
+            </select>
           </div>
           <select class="sort-select" onchange="Catalog.setSort(this.value)" id="desktopSortSelect">
             <option value="pop" data-i18n="sort_pop">Популярні</option>
