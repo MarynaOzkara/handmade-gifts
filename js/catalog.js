@@ -100,8 +100,8 @@ const Catalog = (() => {
     const wished=Store.isWished(p.id);
     const disc=p.old>0?Math.round((1-p.price/p.old)*100):0;
     const stockHtml = p.stock==='in'
-      ? `<div class="card-stock in">● ${t('in_stock_label')}</div>`
-      : `<div class="card-stock order">● ${t('order_label')}</div>`;
+      ? `<span class="card-stock in">● ${t('in_stock_label')}</span>`
+      : `<span class="card-stock order">● ${t('order_label')}</span>`;
     return `<div class="product-card reveal-scale" onclick="Catalog.openModal('${p.id}')">
       <div class="card-img">
         <img src="${p.images[0]}" alt="${p.title}" loading="lazy">
@@ -111,9 +111,9 @@ const Catalog = (() => {
         </button>
       </div>
       <div class="card-body">
-        <div class="card-cat">${catName(p.cat)}</div>
-        <div class="card-title">${currentLang==='en'?(p.title_en||(t(p.id+'_title')!==p.id+'_title'?t(p.id+'_title'):p.title)):p.title}</div>
-        <div class="card-short">${currentLang==='en'?(p.short_en||(t(p.id+'_short')!==p.id+'_short'?t(p.id+'_short'):p.short)):p.short}</div>
+        <span class="card-cat">${catName(p.cat)}</span>
+        <h4 class="card-title">${currentLang==='en'?(p.title_en||(t(p.id+'_title')!==p.id+'_title'?t(p.id+'_title'):p.title)):p.title}</h4>
+        <p class="card-short">${currentLang==='en'?(p.short_en||(t(p.id+'_short')!==p.id+'_short'?t(p.id+'_short'):p.short)):p.short}</p>
         ${stockHtml}
         <div class="card-footer" style="margin-top:10px">
           <div class="card-prices">
