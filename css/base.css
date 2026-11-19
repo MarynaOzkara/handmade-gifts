@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
 :root {
   --acc:       #8e5562;
   --acc-l:     #909b85;
@@ -26,11 +28,11 @@
   --grad4: linear-gradient(125deg, #d8eaf7 0%, #c5ddef 55%, #a9cae3 100%);
   --grad5: linear-gradient(125deg, #fce3c8 0%, #e3bd99 55%, #d4a16f 100%);
   --r:         22px;
-  --r-sm:      8px;
+  --r-sm:      10px;
   --shadow:    0 2px 20px rgba(110,65,70,.10);
   --shadow-lg: 0 20px 60px rgba(110,65,70,.18);
-  --ff-serif:  'Cormorant Garamond',Georgia,serif;
-  --ff-sans:   'DM Sans',-apple-system,sans-serif;
+  --ff-serif:  'Literata',Georgia,serif;
+  --ff-sans:   'Nunito',-apple-system,sans-serif;
   --max-w:     1200px;
   --nav-h:     66px;
   --ease:      cubic-bezier(.4,0,.2,1);
@@ -60,13 +62,14 @@ ul{list-style:none}
 .btn-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--line);transition:.22s var(--ease)}
 .btn-icon:hover{border-color:var(--acc);color:var(--acc)}
 .btn-block{width:100%;justify-content:center}
-.highlight{background:#E8C4A4;color:var(--ink2);padding:0 4px;border-radius:6px}
+.highlight{background:#E8C4A4;color:var(--ink2);padding:0px 4px;border-radius:6px}
 
 /* ── Badges ── */
 .badge{display:inline-block;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:500}
-.badge-hit{background:var(--acc);color:#fff}
-.badge-new{background:var(--ok);color:#fff}
-.badge-sale{background:var(--warn);color:#fff}
+.badge-hit{background: rgba(142, 85, 98, 0.7);box-shadow:var(--shadow);backdrop-filter: blur(6px);-webkit-backdrop-filter: blur(6px);color:#fff}
+.badge-new{background: rgba(74, 124, 89, 0.7);backdrop-filter: blur(6px);
+-webkit-backdrop-filter: blur(6px);box-shadow:var(--shadow);color:#fff;}
+.badge-sale{background:var(--sun);color:var(--sun-ink)}
 
 /* ── Fields ── */
 .field{margin-bottom:16px}
@@ -108,7 +111,7 @@ ul{list-style:none}
 .nav.scrolled{box-shadow:0 2px 20px rgba(110,65,70,.10)}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;height:var(--nav-h);max-width:var(--max-w);margin:0 auto}
 .logo-link{display:flex;align-items:center;gap:4px}
-.logo-title{font-family:var(--ff-serif);font-size:32px;font-weight:600;color:var(--ink2);display:flex;flex-direction:column;line-height:.9;letter-spacing:3%}
+.logo-title{font-family:var(--ff-serif);font-size:26px;font-weight:600;color:var(--ink2);display:flex;flex-direction:column;line-height:.98;letter-spacing:3%}
 .logo-title small{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc-l);font-family:var(--ff-sans);font-weight:400}
 .nav-links{display:flex;gap:32px}
 .nav-links a{font-family:var(--ff-sans);font-size:14px;font-weight:400;text-transform:uppercase;letter-spacing:.16em;color:var(--acc-l);transition:.22s;padding-bottom:2px;border-bottom:1.5px solid transparent}
