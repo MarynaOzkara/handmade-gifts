@@ -3,6 +3,36 @@
 
 const I18N = {
   ua: {
+    about_team_label:'Наша команда', about_team_title:'Майстри, що створюють магію',
+    about_team_intro:'Ми — невелика авторська майстерня Motty Handmade з Києва. Кожен виріб виготовляємо вручну: від ескізу до фінального оформлення. Працюємо з деревом, полімерною глиною, епоксидною смолою, декупажем і 3D-друком — щоб будь-яка ваша ідея могла стати реальністю.',
+    about_master1_name:'Михайло', about_master1_role:'Майстер дерева і смоли',
+    about_master1_desc:'Перетворює живий зріз дерева на арт-об’єкт. Столи-ріки, різьблені шкатулки, декор з епоксидної смоли — кожен виріб живе роками.',
+    about_master1_tag1:'Дерево', about_master1_tag2:'Епоксидна смола', about_master1_tag3:'Різьба',
+    about_master2_name:'Олена', about_master2_role:'Майстриня форм і технологій',
+    about_master2_desc:'Читає людей через деталі і перетворює будь-яку вашу ідею на справжній шедевр. Кожен виріб — це маленька історія про людину, якій він дістанеться.',
+    about_master2_tag1:'Персоналізація', about_master2_tag2:'3D-друк', about_master2_tag3:'Декупаж',
+    about_master3_name:'Жанна', about_master3_role:'Майстриня образів',
+    about_master3_desc:'Статуетки богів, казкові звірі, мінімалістичний декор — точність форми і теплота рук.',
+    about_master3_tag1:'Смола', about_master3_tag2:'Глина', about_master3_tag3:'Характер',
+    oq_intro_title:'Безкоштовна <em style="color:#7C5CBF;font-style:italic">діагностика</em>',
+    oq_intro_desc:'Дайте відповідь на кілька запитань — і я підготую персональні ідеї до нашої зустрічі.',
+    oq_step0_title:'Для кого шукаєте <em style="color:#7C5CBF;font-style:italic">подарунок?</em>',
+    oq_opt0_1:'Для мами / тата',
+    oq_section_label:'Персональний подарунок', oq_section_title:'Замовити унікальний виріб у майстра',
+    oq_section_desc:'Маєте власний ескіз, пам’ятну цитату чи специфічні розміри? Опишіть вашу ідею — і майстер втілить її з найкращих матеріалів.',
+    oq_process1_title:'Узгодження деталей', oq_process1_desc:'Майстер зв’яжеться, покаже зразки та затвердить макет',
+    oq_process2_title:'Ручне виготовлення', oq_process2_desc:'Різьблення, ліпка чи тиснення із щоденним фотозвітом',
+    oq_process3_title:'Подарункове пакування', oq_process3_desc:'Крафт-папір, сургучева печатка і відправка по Україні',
+    oq_guarantee:'<strong>Гарантія:</strong> оплата після фото готового виробу або при отриманні у відділенні.',
+    oq_cta:'Безкоштовна діагностика →',
+    oq_opt0_2:'Для партнера / партнерки', oq_opt0_3:'Для друга / подруги', oq_opt0_4:'Для колеги / знайомого',
+    oq_step1_title:'Який <em style="color:#7C5CBF;font-style:italic">привід?</em>',
+    oq_opt1_1:'День народження', oq_opt1_2:'Річниця / свято', oq_opt1_3:'Просто так — порадувати', oq_opt1_4:'Інший привід',
+    oq_step2_title:'Що найважливіше у <em style="color:#7C5CBF;font-style:italic">подарунку?</em>',
+    oq_opt2_1:'Унікальність і душа', oq_opt2_2:'Підходить під характер', oq_opt2_3:'Вписується в бюджет', oq_opt2_4:'Здивує і запам’ятається',
+    oq_form_title:'Заповніть форму — і оберемо', oq_form_subtitle:'зручний час', oq_name_placeholder:'Ваше ім’я',
+    oq_social_placeholder:'Telegram або Instagram @username (необов’язково)', oq_submit:'ЗАПИСАТИСЯ НА ДІАГНОСТИКУ →',
+    oq_success_title:'Дякуємо! Вже чекаємо', oq_success_desc:'Майстер зв’яжеться з вами найближчим часом і підготує персональні ідеї', oq_back:'← Назад',
     nav_catalog:    'Каталог',
     nav_custom:      'Індивідуально',
     nav_gifts:     'Ідеї подарунку',
@@ -135,6 +165,25 @@ const I18N = {
     footer_tag:  'Авторські вироби ручної роботи',
   },
   en: {
+    oq_intro_title:'Free <em style="color:#7C5CBF;font-style:italic">consultation</em>',
+    oq_intro_desc:'Answer a few questions and I’ll prepare personal ideas for our conversation.',
+    oq_step0_title:'Who are you looking for a <em style="color:#7C5CBF;font-style:italic">gift for?</em>',
+    oq_opt0_1:'For Mom / Dad',
+    oq_section_label:'A gift made just for them', oq_section_title:'Commission a one-of-a-kind handmade piece',
+    oq_section_desc:'Have a sketch, a meaningful quote or specific dimensions in mind? Tell us about your idea and our artisan will bring it to life with carefully chosen materials.',
+    oq_process1_title:'Plan the details', oq_process1_desc:'The artisan will get in touch, share samples and approve the design with you.',
+    oq_process2_title:'Made by hand', oq_process2_desc:'Carving, sculpting or embossing, with photo updates along the way.',
+    oq_process3_title:'Gift-ready packaging', oq_process3_desc:'Kraft paper, a wax seal and delivery across Ukraine.',
+    oq_guarantee:'<strong>Our promise:</strong> pay after seeing a photo of the finished piece or when you collect it.',
+    oq_cta:'Free consultation →',
+    oq_opt0_2:'For a partner', oq_opt0_3:'For a friend', oq_opt0_4:'For a colleague / acquaintance',
+    oq_step1_title:'What’s the <em style="color:#7C5CBF;font-style:italic">occasion?</em>',
+    oq_opt1_1:'Birthday', oq_opt1_2:'Anniversary / celebration', oq_opt1_3:'Just because', oq_opt1_4:'Another occasion',
+    oq_step2_title:'What matters most in a <em style="color:#7C5CBF;font-style:italic">gift?</em>',
+    oq_opt2_1:'Uniqueness and meaning', oq_opt2_2:'A good fit for their personality', oq_opt2_3:'Stays within budget', oq_opt2_4:'Surprising and memorable',
+    oq_form_title:'Share your details and we’ll find', oq_form_subtitle:'a convenient time', oq_name_placeholder:'Your name',
+    oq_social_placeholder:'Telegram or Instagram @username (optional)', oq_submit:'BOOK A CONSULTATION →',
+    oq_success_title:'Thank you! We look forward to talking', oq_success_desc:'The artisan will contact you soon with personalized ideas.', oq_back:'← Back',
     nav_catalog:    'Catalog',
     nav_custom:      'Custom gifts',
     nav_gifts:     'Gift ideas',
@@ -212,6 +261,18 @@ const I18N = {
     about_customers:'happy customers',
     about_techs:    'craft techniques',
     about_years:    'of experience',
+    about_team_label:'Our team',
+    about_team_title:'The makers behind the magic',
+    about_team_intro:'We are Motty Handmade, a small artisan workshop in Kyiv. Every piece is made by hand, from the first sketch to the final presentation. We work with wood, polymer clay, epoxy resin, decoupage and 3D printing to bring your ideas to life.',
+    about_master1_name:'Mykhailo', about_master1_role:'Wood and resin artisan',
+    about_master1_desc:'He turns natural wood into art. River tables, carved boxes and epoxy resin decor are made to last for years.',
+    about_master1_tag1:'Wood', about_master1_tag2:'Epoxy resin', about_master1_tag3:'Wood carving',
+    about_master2_name:'Olena', about_master2_role:'Form and technology artisan',
+    about_master2_desc:'She reads people through details and turns your ideas into something special. Every piece tells a small story about the person who receives it.',
+    about_master2_tag1:'Personalisation', about_master2_tag2:'3D printing', about_master2_tag3:'Decoupage',
+    about_master3_name:'Zhanna', about_master3_role:'Figurine artist',
+    about_master3_desc:'God figurines, fairytale creatures and minimalist decor, shaped with precision and made with care.',
+    about_master3_tag1:'Resin', about_master3_tag2:'Clay', about_master3_tag3:'Character',
     picker_label:   'Not sure what to choose',
     picker_h2:      'Find the perfect gift in 3 steps',
     picker_p:       'Tell us who it\'s for and the occasion — we\'ll show what truly fits.',
@@ -296,7 +357,7 @@ function setLang(lang) {
   localStorage.setItem('motty_lang', lang);
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
-    if (el.tagName === 'INPUT' && el.placeholder !== undefined) {
+    if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
       el.placeholder = t(key);
     } else {
       el.innerHTML = t(key);
@@ -310,4 +371,5 @@ function setLang(lang) {
   if (typeof Catalog !== 'undefined' && typeof Catalog.rerenderText === 'function') {
     Catalog.rerenderText();
   }
+  if (typeof renderFaq === 'function') renderFaq();
 }

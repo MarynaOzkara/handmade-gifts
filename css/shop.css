@@ -319,6 +319,18 @@
 
 /* About */
 .masters-wrap{margin-top:32px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.masters-card{background:var(--surface);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);transition:.3s}
+.masters-card:hover{transform: translateY(-6px);}
+.masters-img{position:relative;aspect-ratio:4/3;overflow:hidden;background:#f0e8dc}
+.masters-info{padding:22px 24px}
+.masters-info h3{font-family:var(--ff-serif);font-size:22px;font-weight:500;margin-bottom:4px;color:var(--ink2)}
+.masters-info span{font-size:12px;color:var(--acc-l);font-weight:500;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.masters-info p{margin-bottom: 16px}
+.masrers-tags{display:flex;gap:8px;flex-wrap:wrap}
+.masters-tag-span{padding:4px 10px;border-radius:50px;font-size:12px}
+.spn1{background:#E6C6CD;color:var(--acc)}
+.spn2{background:#c6d4c6;color:#355743}
+.spn3{background:#cab3d1;color:#4e3d64}
 
 /* Order Quiz */
 .oq-dot{height:5px;border-radius:3px;width:36px;background:var(--line);transition:.35s}
@@ -333,6 +345,15 @@
 
 /* ── About block ── */
 .about{padding:80px 0;}
+.about .wrap>div:first-child{max-width:900px;margin:0 auto;text-align:center}
+.about .wrap>div:first-child p{line-height:1.75}
+.masters-card{min-width:0}
+.masters-info{overflow-wrap:anywhere}
+#order-quiz .wrap>div{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:clamp(28px,5vw,64px)!important}
+#order-quiz .wrap>div>div:last-child img{display:block;width:100%;height:100%;min-height:320px;max-height:560px;object-fit:cover}
+#orderQuizBox{max-height:calc(100dvh - 48px);overflow-y:auto}
+#oqBody{min-width:0}
+.oq-opt{min-width:0;overflow-wrap:anywhere}
 
 /* ── FAQ ── */
 .faq-section{padding:80px 0;background:var(--soft)}
@@ -349,6 +370,11 @@
 
 /* ── Responsive shop ── */
 @media(max-width:1024px){
+  .masters-wrap{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+  .masters-card:last-child{grid-column:1/-1;max-width:calc(50% - 10px);justify-self:center;width:100%}
+  #order-quiz{padding:64px 24px!important}
+  #order-quiz .wrap>div{gap:28px!important}
+  #oqBody{padding-left:28px!important;padding-right:28px!important}
   .catalog-layout{grid-template-columns:240px 1fr}
   .products-grid{grid-template-columns:repeat(2,1fr)}
   .hero-about{padding:64px 24px}
@@ -362,6 +388,18 @@
   .quiz-results-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:768px){
+  .about{padding:56px 0}
+  .masters-wrap{grid-template-columns:1fr;gap:18px;margin-top:24px}
+  .masters-card:last-child{grid-column:auto;max-width:none}
+  .masters-info{padding:20px}
+  #order-quiz{padding:56px 20px!important}
+  #order-quiz .wrap>div{grid-template-columns:1fr!important;gap:28px!important}
+  #order-quiz .wrap>div>div:last-child{max-height:360px}
+  #order-quiz .wrap>div>div:last-child img{min-height:0;height:clamp(220px,60vw,360px)}
+  #orderQuizOverlay{padding:16px!important;align-items:flex-start!important}
+  #orderQuizBox{margin:auto!important;max-height:calc(100dvh - 32px)}
+  #oqBody{padding:0 24px 24px!important}
+  #oqBody h3{font-size:clamp(20px,5vw,25px)!important}
   .hero-about{padding:48px 20px}
   .hero-wrap{flex-direction:column;align-items:stretch;gap:32px}
   .hero-text{flex:none;width:100%;max-width:none}
@@ -389,6 +427,15 @@
   .faq-grid{grid-template-columns:1fr}
 }
 @media(max-width:480px){
+  #order-quiz{padding:44px 16px!important}
+  #order-quiz .wrap>div>div:last-child{max-height:260px}
+  #order-quiz .wrap>div>div:last-child img{height:240px}
+  #orderQuizOverlay{padding:8px!important}
+  #orderQuizBox{border-radius:16px!important;max-height:calc(100dvh - 16px)}
+  #oqBody{padding:0 16px 20px!important}
+  #oqDots{margin-bottom:18px!important}
+  .oq-opts{gap:8px}
+  .oq-opt{padding:12px;font-size:13px}
   .lang-switcher{display: none;}
   .hero-about{padding:36px 16px}
   .hero-wrap{gap:24px}
