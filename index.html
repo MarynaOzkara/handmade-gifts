@@ -388,7 +388,7 @@
     </div>
     <!-- Step 1 -->
     <div class="quiz-step show" id="qs0">
-      <div class="quiz-step-title" data-i18n="q1_title">Для кого обираєте подарунок?</div>
+      <h3 class="quiz-step-title" data-i18n="q1_title">Для кого обираєте подарунок?</h3>
       <div class="quiz-step-sub" data-i18n="q1_sub"></div>
       <div class="quiz-options" id="qOpts0"></div>
     </div>
@@ -496,9 +496,9 @@
           <span data-i18n="about_master1_role">Майстер дерева і смоли</span>
           <p data-i18n="about_master1_desc">Перетворює живий зріз дерева на арт-об&#39;єкт. Столи-ріки, різьблені шкатулки, декор з епоксидної смоли — кожен виріб живе роками.</p>
           <div class="masrers-tags">
-            <p class="masters-tag-span spn1" data-i18n="about_master1_tag1">Дерево</p>
-            <p class="masters-tag-span spn1" data-i18n="about_master1_tag2">Епоксидна смола</p>
-            <p class="masters-tag-span spn1" data-i18n="about_master1_tag3">Різьба</p>
+            <small class="masters-tag-span spn1" data-i18n="about_master1_tag1">Дерево</small>
+            <small class="masters-tag-span spn1" data-i18n="about_master1_tag2">Епоксидна смола</small>
+            <small class="masters-tag-span spn1" data-i18n="about_master1_tag3">Різьба</small>
           </div>
         </div>
       </div>
@@ -512,9 +512,9 @@
           <span data-i18n="about_master2_role">Майстриня форм і технологій</span>
           <p data-i18n="about_master2_desc">Читає людей через деталі і перетворює любу вашу ідею в справжній шедевр. Кожен виріб — це маленька історія про людину, якій вона дістанеться.</p>
           <div class="masrers-tags">
-            <p class="masters-tag-span spn2" data-i18n="about_master2_tag1">Персоналізація</p>
-            <p class="masters-tag-span spn2" data-i18n="about_master2_tag2">3D-друк</p>
-            <p class="masters-tag-span spn2" data-i18n="about_master2_tag3">Декупаж</p>
+            <small class="masters-tag-span spn2" data-i18n="about_master2_tag1">Персоналізація</small>
+            <small class="masters-tag-span spn2" data-i18n="about_master2_tag2">3D-друк</small>
+            <small class="masters-tag-span spn2" data-i18n="about_master2_tag3">Декупаж</small>
           </div>
         </div>
       </div>
@@ -528,9 +528,9 @@
           <span data-i18n="about_master3_role">Майстриня образів</span>
           <p data-i18n="about_master3_desc">Статуетки богів, казкові звірі, мінімалістичний декор — точність форми і теплота рук.</p>
           <div class="masrers-tags">
-            <p class="masters-tag-span spn3" data-i18n="about_master3_tag1">Смола</p>
-            <p class="masters-tag-span spn3" data-i18n="about_master3_tag2">Глина</p>
-            <p class="masters-tag-span spn3" data-i18n="about_master3_tag3">Характер</p>
+            <small class="masters-tag-span spn3" data-i18n="about_master3_tag1">Смола</small>
+            <small class="masters-tag-span spn3" data-i18n="about_master3_tag2">Глина</small>
+            <small class="masters-tag-span spn3" data-i18n="about_master3_tag3">Характер</small>
           </div>
         </div>
       </div>
@@ -539,23 +539,50 @@
 </section>
 
 <!-- ORDER QUIZ SECTION -->
-<section id="order-quiz" class="order-quiz-section" style="background:var(--surface);padding:80px 0">
+<section id="order-quiz" class="order-quiz-section">
   <div class="wrap" style="max-width:1040px">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+    <div class="order-quiz-grid">
       <div class="reveal-left">
         <span class="section-label" data-i18n="oq_section_label">Персональний подарунок</span>
         <h2 data-i18n="oq_section_title">Замовити унікальний виріб у майстра</h2>
-        <p data-i18n="oq_section_desc" style="color:var(--ink2);font-size:15px;line-height:1.75;margin-bottom:28px">Маєте власний ескіз, пам&#39;ятну цитату чи специфічні розміри? Опишіть вашу ідею — і майстер втілить її з найкращих матеріалів.</p>
-        <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:28px">
-          <div style="display:flex;gap:14px;align-items:flex-start"><div style="width:32px;height:32px;border-radius:50%;background:var(--acc);color:#fff;font-family:var(--ff-serif);font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div><p data-i18n="oq_process1_title" style="font-size:15px;font-weight:500;margin:0 0 3px">Узгодження деталей</p><p data-i18n="oq_process1_desc" style="font-size:13px;color:var(--mute);margin:0">Майстер зв&#39;яжеться, покаже зразки та затвердить макет</p></div></div>
-          <div style="display:flex;gap:14px;align-items:flex-start"><div style="width:32px;height:32px;border-radius:50%;background:var(--acc);color:#fff;font-family:var(--ff-serif);font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div><p data-i18n="oq_process2_title" style="font-size:15px;font-weight:500;margin:0 0 3px">Ручне виготовлення</p><p data-i18n="oq_process2_desc" style="font-size:13px;color:var(--mute);margin:0">Різьблення, ліпка чи тиснення із щоденним фотозвітом</p></div></div>
-          <div style="display:flex;gap:14px;align-items:flex-start"><div style="width:32px;height:32px;border-radius:50%;background:var(--acc);color:#fff;font-family:var(--ff-serif);font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div><p data-i18n="oq_process3_title" style="font-size:15px;font-weight:500;margin:0 0 3px">Подарункове пакування</p><p data-i18n="oq_process3_desc" style="font-size:13px;color:var(--mute);margin:0">Крафт-папір, сургучева печатка і відправка по Україні</p></div></div>
+        <p data-i18n="oq_section_desc">Маєте власний ескіз, пам&#39;ятну цитату чи специфічні розміри. Опишіть вашу ідею — і майстер втілить її з найкращих матеріалів.</p>
+        <ul class="order-steps">
+          <li class="order-step-item">
+            <span class="order-step-num">
+              1
+            </span>
+            <div class="order-step-info">
+              <p data-i18n="oq_process1_title">
+                Узгодження деталей</p>
+              <small data-i18n="oq_process1_desc">Майстер зв&#39;яжеться, покаже зразки та затвердить макет</small>
+            </div>
+          </li>
+          <li class="order-step-item">
+            <span class="order-step-num">
+            2
+            </span>
+            <div class="order-step-info">
+              <p data-i18n="oq_process2_title" >Ручне виготовлення</p>
+              <small data-i18n="oq_process2_desc" >Різьблення, ліпка чи тиснення із щоденним фотозвітом</small>
+            </div>
+          </li>
+          <li class="order-step-item">
+            <span class="order-step-num">
+              3
+            </span>
+            <div class="order-step-info">
+              <p data-i18n="oq_process3_title">Подарункове пакування</p>
+              <small data-i18n="oq_process3_desc">Крафт-папір, мотузка з льону і відправка по Україні</small>
+            </div>
+          </li>
+        </ul>
+        <div class="order-steps-garanty">
+          <svg width="18" height="18" class="garanty-icon">
+            <use href="./assets/symbol-defs.svg#icon-garanty"></use>
+          </svg>
+          <p data-i18n="oq_guarantee"><strong>Гарантія:</strong> оплата після фото готового виробу або при отриманні у відділенні.</p>
         </div>
-        <div style="background:var(--ok-soft);border-radius:var(--r-sm);padding:14px 16px;display:flex;gap:10px;margin-bottom:24px">
-          <svg width="18" height="18" fill="none" stroke="var(--ok)" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <p data-i18n="oq_guarantee" style="font-size:13px;color:var(--ink2);margin:0;line-height:1.6"><strong>Гарантія:</strong> оплата після фото готового виробу або при отриманні у відділенні.</p>
-        </div>
-        <button class="btn btn-primary" onclick="openOrderQuiz()" data-i18n="oq_cta">Безкоштовна діагностика &#8594;</button>
+        <button class="btn btn-primary" onclick="openOrderQuiz()" data-i18n="oq_cta">Замовити подарунок &#8594;</button>
       </div>
       <div class="reveal-right" style="border-radius:var(--r);overflow:hidden">
         <img src="./assets/decupas-boutle.jpg" alt="Personal gift"/>
@@ -565,13 +592,13 @@
 </section>
 
 <!-- ORDER QUIZ MODAL -->
-<div id="orderQuizOverlay" class="order-quiz-overlay" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.5);overflow-y:auto;padding:40px 20px;align-items:center;justify-content:center" onclick="handleOQClick(event)">
-  <div id="orderQuizBox" style="background:#F5F5F8;border-radius:20px;max-width:620px;width:100%;margin:auto;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.2);overflow:hidden">
-    <button onclick="closeOrderQuiz()" style="position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10">
+<div id="orderQuizOverlay" class="order-quiz-overlay" onclick="handleOQClick(event)">
+  <div id="orderQuizBox" class="order-quiz-box">
+    <button onclick="closeOrderQuiz()" class="order-quiz-close">
       <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <div style="padding:32px 40px 0;text-align:center">
-      <div id="oqDots" style="display:flex;justify-content:center;gap:8px;margin-bottom:24px">
+      <div id="oqDots" class="order-quiz-bar">
         <div class="oq-dot oq-dot-a"></div>
         <div class="oq-dot"></div>
         <div class="oq-dot"></div>
@@ -581,43 +608,79 @@
     <div style="padding:0 40px 40px" id="oqBody">
       <!-- Step 0 -->
       <div class="oq-step oq-show" id="oqs0">
-        <div style="text-align:center;margin-bottom:24px">
-          <h2 data-i18n="oq_intro_title" style="font-family:var(--ff-serif);font-size:clamp(22px,3vw,30px);font-weight:500;margin-bottom:8px">Безкоштовна <em style="color:#7C5CBF;font-style:italic">діагностика</em></h2>
-          <p data-i18n="oq_intro_desc" style="color:var(--mute);font-size:14px;line-height:1.6">Дайте відповідь на кілька запитань — і я підготую персональні ідеї до нашої зустрічі</p>
+        <div class="quiz-header">
+          <span class="section-label" data-i18n="oq_section_label">Персональний подарунок</span>
+          <h2 data-i18n="oq_intro_title">Замовити унікальний подарунок</h2>
+          <p data-i18n="oq_intro_desc">Дайте відповідь на кілька запитань — і майстер підготує персональні ідеї подарунку</p>
         </div>
-        <h3 data-i18n="oq_step0_title" style="font-family:var(--ff-serif);font-size:22px;text-align:center;margin-bottom:18px">Для кого шукаєте <em style="color:#7C5CBF;font-style:italic">подарунок?</em></h3>
+        <h3 data-i18n="oq_step0_title" class="quiz-step-title">Для кого замовляєте подарунок?</h3>
         <div class="oq-opts">
-          <button class="oq-opt" onclick="oqSel(0,this)"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span data-i18n="oq_opt0_1">Для мами / тата</span></button>
-          <button class="oq-opt" onclick="oqSel(0,this)"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/></svg><span data-i18n="oq_opt0_2">Для партнера / партнерки</span></button>
-          <button class="oq-opt" onclick="oqSel(0,this)"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span data-i18n="oq_opt0_3">Для друга / подруги</span></button>
-          <button class="oq-opt" onclick="oqSel(0,this)"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg><span data-i18n="oq_opt0_4">Для колеги / знайомого</span></button>
+          <button class="oq-opt" onclick="oqSel(0,this)">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span data-i18n="oq_opt0_1">Для мами / тата</span>
+          </button>
+          <button class="oq-opt" onclick="oqSel(0,this)">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/></svg>
+            <span data-i18n="oq_opt0_2">Для партнера / партнерки</span>
+          </button>
+          <button class="oq-opt" onclick="oqSel(0,this)">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span data-i18n="oq_opt0_3">Для друга / подруги</span>
+          </button>
+          <button class="oq-opt" onclick="oqSel(0,this)">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            <span data-i18n="oq_opt0_4">Для колеги / знайомого</span>
+          </button>
         </div>
       </div>
       <!-- Step 1 -->
       <div class="oq-step" id="oqs1">
-        <h3 data-i18n="oq_step1_title" style="font-family:var(--ff-serif);font-size:clamp(22px,3vw,28px);text-align:center;margin-bottom:18px">Який <em style="color:#7C5CBF;font-style:italic">привід?</em></h3>
+        <h3 data-i18n="oq_step1_title" class="quiz-step-title">Який привід?</h3>
         <div class="oq-opts">
-          <button class="oq-opt" onclick="oqSel(1,this)"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span data-i18n="oq_opt1_1">День народження</span></button>
-          <button class="oq-opt" onclick="oqSel(1,this)"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><span data-i18n="oq_opt1_2">Річниця / свято</span></button>
-          <button class="oq-opt" onclick="oqSel(1,this)"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="oq_opt1_3">Просто так — порадувати</span></button>
-          <button class="oq-opt" onclick="oqSel(1,this)"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span data-i18n="oq_opt1_4">Інший привід</span></button>
+          <button class="oq-opt" onclick="oqSel(1,this)">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span data-i18n="oq_opt1_1">День народження</span>
+          </button>
+          <button class="oq-opt" onclick="oqSel(1,this)">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span data-i18n="oq_opt1_2">Річниця / свято</span>
+          </button>
+          <button class="oq-opt" onclick="oqSel(1,this)">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span data-i18n="oq_opt1_3">Просто так — порадувати</span>
+          </button>
+          <button class="oq-opt" onclick="oqSel(1,this)">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span data-i18n="oq_opt1_4">Інший привід</span>
+          </button>
         </div>
       </div>
       <!-- Step 2 -->
       <div class="oq-step" id="oqs2">
-        <h3 data-i18n="oq_step2_title" style="font-family:var(--ff-serif);font-size:clamp(22px,3vw,28px);text-align:center;margin-bottom:18px">Що найважливіше у <em style="color:#7C5CBF;font-style:italic">подарунку?</em></h3>
+        <h3 data-i18n="oq_step2_title" class="quiz-step-title">Що найважливіше у подарунку?</h3>
         <div class="oq-opts">
-          <button class="oq-opt" onclick="oqSel(2,this)"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="oq_opt2_1">Унікальність і душа</span></button>
-          <button class="oq-opt" onclick="oqSel(2,this)"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-i18n="oq_opt2_2">Підходить під характер</span></button>
-          <button class="oq-opt" onclick="oqSel(2,this)"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span data-i18n="oq_opt2_3">Вписується в бюджет</span></button>
-          <button class="oq-opt" onclick="oqSel(2,this)"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span data-i18n="oq_opt2_4">Здивує і запам&#39;ятається</span></button>
+          <button class="oq-opt" onclick="oqSel(2,this)">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span data-i18n="oq_opt2_1">Унікальність і душа</span>
+          </button>
+          <button class="oq-opt" onclick="oqSel(2,this)">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span data-i18n="oq_opt2_2">Підходить під характер</span>
+          </button>
+          <button class="oq-opt" onclick="oqSel(2,this)">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            <span data-i18n="oq_opt2_3">Вписується в бюджет</span>
+          </button>
+          <button class="oq-opt" onclick="oqSel(2,this)">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span data-i18n="oq_opt2_4">Здивує і запам&#39;ятається</span>
+          </button>
         </div>
       </div>
       <!-- Step 3: форма -->
       <div class="oq-step" id="oqs3">
         <div style="text-align:center;margin-bottom:22px">
-          <h3 data-i18n="oq_form_title" style="font-family:var(--ff-serif);font-size:clamp(20px,2.5vw,28px);font-weight:500;margin-bottom:6px">Заповніть форму — і оберемо</h3>
-          <span data-i18n="oq_form_subtitle" style="font-family:var(--ff-serif);font-size:clamp(18px,2vw,24px);color:#7C5CBF;font-style:italic">зручний час</span>
+          <h3 data-i18n="oq_form_title" class="quiz-step-title">Заповніть форму — і майстер передзвонить вам або напише в телеграм.</h3>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px">
           <input id="oqName" type="text" data-i18n="oq_name_placeholder" placeholder="Ваше ім&#39;я" style="width:100%;padding:14px 18px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:15px;font-family:var(--ff-sans);background:#fff;outline:none;box-sizing:border-box">
@@ -626,7 +689,7 @@
             <input id="oqPhone" type="tel" placeholder="67 123 45 67" style="flex:1;padding:14px;border:none;font-size:15px;font-family:var(--ff-sans);background:transparent;outline:none">
           </div>
           <input id="oqSocial" type="text" data-i18n="oq_social_placeholder" placeholder="Telegram або Instagram @username (необов&#39;язково)" style="width:100%;padding:14px 18px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-size:15px;font-family:var(--ff-sans);background:#fff;outline:none;box-sizing:border-box">
-          <button data-i18n="oq_submit" onclick="oqSubmit()" style="width:100%;padding:16px;background:#7C5CBF;color:#fff;border:none;border-radius:50px;font-size:14px;font-weight:600;font-family:var(--ff-sans);letter-spacing:.06em;cursor:pointer;margin-top:6px">ЗАПИСАТИСЯ НА ДІАГНОСТИКУ &#8594;</button>
+          <button data-i18n="oq_submit" onclick="oqSubmit()" class="btn btn-primary">Замовити подарунок &#8594;</button>
         </div>
       </div>
       <!-- Success -->
@@ -660,7 +723,7 @@
         <div class="footer-logo">Motty<small>Handmade</small></div>
         <p data-i18n="footer_desc">Авторські подарунки ручної роботи з Києва.</p>
         <div class="social-links">
-          <a href="https://t.me/MarusyaOzkara" class="social-link" target="_blank" rel="noopener">
+          <a href="https://t.me/OzkaraM" class="social-link" target="_blank" rel="noopener">
             <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.93 8.29l-2.03 9.56c-.15.67-.54.83-1.09.52l-3-2.21-1.45 1.39c-.16.16-.29.29-.6.29l.22-3.07 5.6-5.06c.24-.22-.05-.34-.37-.12L6.55 14.2l-2.95-.92c-.64-.2-.65-.64.14-.95l11.54-4.45c.54-.19 1.01.13.65.41z"/></svg>
           </a>
           <a href="https://instagram.com/Motty_handmade" class="social-link" target="_blank" rel="noopener">
@@ -684,7 +747,7 @@
         <a href="#about" data-i18n="footer_about">Про нас</a>
         <a href="#faq">FAQ</a>
         <a href="#gift-picker" data-i18n="footer_order">Індивідуальне замовлення</a>
-        <a href="cart.html">Кошик</a>
+        <a href="cart.html" data-i18n="footer_cart">Кошик</a>
       </div>
       <div class="footer-col">
         <h5 data-i18n="footer_contacts">Контакти</h5>
@@ -692,7 +755,7 @@
         <a href="https://t.me/Motty_shop" target="_blank">@Motty_shop</a>
         <a href="https://instagram.com/Motty_handmade" target="_blank">@Motty_handmade</a>
         <a href="mailto:info@motty-handmade.com.ua">info@motty-handmade.com.ua</a>
-        <a>м. Київ · щодня 9:00–20:00</a>
+        <a data-i18n="footer_address">м. Київ · щодня 9:00–20:00</a>
       </div>
     </div>
     <div class="footer-bottom">
