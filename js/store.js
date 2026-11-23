@@ -67,7 +67,7 @@ function showToast(msg,dur=2500){
   el._t=setTimeout(()=>el.classList.remove('show'),dur);
 }
 function fmt(n){ return Number(n).toLocaleString('uk-UA')+' ₴'; }
-function catName(id){ const c=MOTTY_CATEGORIES.find(c=>c.id===id); return c?c.name:id; }
+function catName(id){ const keys={all:'cat_all',decor:'cat_decor',jewelry:'cat_jewelry',figures:'cat_figures',holidays:'cat_holidays',print3d:'cat_print3d',personal:'cat_personal'}; const c=MOTTY_CATEGORIES.find(c=>c.id===id); return keys[id]&&typeof t==='function'?t(keys[id]):(c?c.name:id); }
 function badgeHtml(p){
   if(!p.badge&&!p.old) return '';
   let b='';

@@ -7,6 +7,20 @@ const CartPage = (() => {
   let selectedDelivery = null;
   let selectedPayment  = null;
 
+  function productTitle(product) {
+    if (currentLang !== 'en') return product.title;
+    const translated = product.title_en || t(product.id + '_title');
+    return translated !== product.id + '_title' ? translated : product.title;
+  }
+
+  function unitLabel() {
+    return currentLang === 'en' ? 'pc.' : '\u0448\u0442.';
+  }
+
+  function confirmLabel() {
+    return currentLang === 'en' ? 'Place order &rarr;' : '\u041f\u0456\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u0438 \u0437\u0430\u043c\u043e\u0432\u043b\u0435\u043d\u043d\u044f &rarr;';
+  }
+
   function init() {
     const items = Store.getCartItems();
     if (!items.length) { showEmptyCart(); return; }
@@ -25,12 +39,13 @@ const CartPage = (() => {
   // ── Підсумок замовлення ──
   function renderCheckoutItems(items) {
     const wrap = document.getElementById('summaryItems');
+    if (!wrap) return;
     wrap.innerHTML = items.map(i => `
       <div class="summary-item">
-        <img class="summary-item-img" src="${i.product.images[0]}" alt="${i.product.title}">
+        <img class="summary-item-img" src="${i.product.images[0]}" alt="${productTitle(i.product)}">
         <div class="summary-item-info">
-          <h5>${i.product.title}${i.option ? ' — ' + i.option : ''}</h5>
-          <p>${i.qty} шт. × ${fmt(i.product.price)}</p>
+          <h5>${productTitle(i.product)}${i.option ? ' &mdash; ' + i.option : ''}</h5>
+          <p>${i.qty} ${unitLabel()} &times; ${fmt(i.product.price)}</p>
         </div>
         <span class="summary-item-price">${fmt(i.product.price * i.qty)}</span>
       </div>`).join('');
@@ -41,18 +56,18 @@ const CartPage = (() => {
     if (!wrap) return;
     wrap.innerHTML = items.map(i => `
       <div class="cart-item">
-        <img class="cart-item-img" src="${i.product.images[0]}" alt="${i.product.title}">
+        <img class="cart-item-img" src="${i.product.images[0]}" alt="${productTitle(i.product)}">
         <div class="cart-item-info">
-          <h5>${i.product.title}${i.option ? ' — ' + i.option : ''}</h5>
-          <p>${fmt(i.product.price)} / шт.</p>
+          <h5>${productTitle(i.product)}${i.option ? ' &mdash; ' + i.option : ''}</h5>
+          <p>${fmt(i.product.price)} / ${unitLabel()}</p>
           <div class="cart-item-qty">
-            <button class="qty-btn" onclick="CartPage.changeQty('${i.key}',-1)">−</button>
+            <button class="qty-btn" onclick="CartPage.changeQty('${i.key}',-1)" aria-label="Decrease quantity">&minus;</button>
             <span class="qty-val">${i.qty}</span>
-            <button class="qty-btn" onclick="CartPage.changeQty('${i.key}',1)">+</button>
+            <button class="qty-btn" onclick="CartPage.changeQty('${i.key}',1)" aria-label="Increase quantity">+</button>
           </div>
           <div class="cart-item-price">${fmt(i.product.price * i.qty)}</div>
         </div>
-        <button class="cart-item-remove" onclick="CartPage.removeItem('${i.key}')">×</button>
+        <button class="cart-item-remove" aria-label="Remove item" onclick="CartPage.removeItem('${i.key}')">&times;</button>
       </div>`).join('');
   }
 
@@ -79,20 +94,31 @@ const CartPage = (() => {
   function renderDelivery() {
     const wrap = document.getElementById('deliveryOptions');
     if (!wrap) return;
-    wrap.innerHTML = MOTTY_SETTINGS.delivery.map(d => `
+    const english = {
+      nova: ['Nova Poshta', 'To a branch or parcel locker'],
+      nova_door: ['Nova Poshta courier', 'Courier delivery to your door'],
+      ukr: ['Ukrposhta', 'Delivery to a post office'],
+      pickup: ['Pickup', 'Kyiv, by arrangement'],
+    };
+    wrap.innerHTML = MOTTY_SETTINGS.delivery.map(d => {
+      const label = currentLang === 'en' ? (english[d.id] || [d.name, d.desc]) : [d.name, d.desc];
+      const free = getDeliveryCost(d) === 0;
+      return `
       <label class="delivery-option" onclick="CartPage.selectDelivery('${d.id}')">
         <input type="radio" name="delivery" value="${d.id}">
         <div class="delivery-option-info">
-          <h5>${d.name}</h5>
-          <p>${d.desc}</p>
+          <h5>${label[0]}</h5>
+          <p>${label[1]}</p>
         </div>
-        <span class="delivery-price ${getDeliveryCost(d) === 0 ? 'free' : ''}">
-          ${getDeliveryCost(d) === 0 ? 'Безкоштовно' : fmt(d.price)}
+        <span class="delivery-price ${free ? 'free' : ''}">
+          ${free ? (currentLang === 'en' ? 'Free' : '\u0411\u0435\u0437\u043a\u043e\u0448\u0442\u043e\u0432\u043d\u043e') : fmt(d.price)}
         </span>
-      </label>`).join('');
-    // Вибрати перший
-    selectDelivery(MOTTY_SETTINGS.delivery[0].id);
-    document.querySelector(`input[value="${MOTTY_SETTINGS.delivery[0].id}"]`).checked = true;
+      </label>`;
+    }).join('');
+    const deliveryId = selectedDelivery || MOTTY_SETTINGS.delivery[0].id;
+    selectDelivery(deliveryId);
+    const selected = wrap.querySelector(`input[value="${deliveryId}"]`);
+    if (selected) selected.checked = true;
   }
 
   function getDeliveryCost(d) {
@@ -105,41 +131,43 @@ const CartPage = (() => {
     document.querySelectorAll('.delivery-option').forEach(el => {
       el.classList.toggle('selected', el.querySelector('input').value === id);
     });
-    const d = MOTTY_SETTINGS.delivery.find(d => d.id === id);
     const fields = document.getElementById('deliveryFields');
     if (!fields) return;
     if (id === 'pickup') {
-      fields.innerHTML = `<p style="font-size:13px;color:var(--mute);margin-top:10px">📍 Самовивіз, Київ. Адресу уточнимо після підтвердження замовлення.</p>`;
+      fields.innerHTML = `<p style="font-size:13px;color:var(--mute);margin-top:10px">${currentLang === 'en' ? 'Pickup in Kyiv. We will confirm the address after your order.' : '\u0421\u0430\u043c\u043e\u0432\u0438\u0432\u0456\u0437, \u041a\u0438\u0457\u0432. \u0410\u0434\u0440\u0435\u0441\u0443 \u0443\u0442\u043e\u0447\u043d\u0438\u043c\u043e \u043f\u0456\u0441\u043b\u044f \u043f\u0456\u0434\u0442\u0432\u0435\u0440\u0434\u0436\u0435\u043d\u043d\u044f \u0437\u0430\u043c\u043e\u0432\u043b\u0435\u043d\u043d\u044f.'}</p>`;
     } else if (id === 'nova_door') {
       fields.innerHTML = `
-        <div class="field"><label>Місто</label><input id="fieldCity" type="text" placeholder="Наприклад: Київ"></div>
-        <div class="field"><label>Вулиця і будинок</label><input id="fieldAddress" type="text" placeholder="вул. Хрещатик, 1"></div>`;
+        <div class="field"><label>${currentLang === 'en' ? 'City' : '\u041c\u0456\u0441\u0442\u043e'}</label><input id="fieldCity" type="text" placeholder="${currentLang === 'en' ? 'For example: Kyiv' : '\u041d\u0430\u043f\u0440\u0438\u043a\u043b\u0430\u0434: \u041a\u0438\u0457\u0432'}"></div>
+        <div class="field"><label>${currentLang === 'en' ? 'Street and building' : '\u0412\u0443\u043b\u0438\u0446\u044f \u0456 \u0431\u0443\u0434\u0438\u043d\u043e\u043a'}</label><input id="fieldAddress" type="text" placeholder="${currentLang === 'en' ? 'Street, building number' : '\u0432\u0443\u043b. \u0425\u0440\u0435\u0449\u0430\u0442\u0438\u043a, 1'}"></div>`;
     } else {
       fields.innerHTML = `
         <div class="field-row">
-          <div class="field"><label>Місто</label><input id="fieldCity" type="text" placeholder="Наприклад: Київ"></div>
-          <div class="field"><label>Відділення / поштомат</label><input id="fieldWarehouse" type="text" placeholder="№ відділення"></div>
+          <div class="field"><label>${currentLang === 'en' ? 'City' : '\u041c\u0456\u0441\u0442\u043e'}</label><input id="fieldCity" type="text" placeholder="${currentLang === 'en' ? 'For example: Kyiv' : '\u041d\u0430\u043f\u0440\u0438\u043a\u043b\u0430\u0434: \u041a\u0438\u0457\u0432'}"></div>
+          <div class="field"><label>${currentLang === 'en' ? 'Branch / parcel locker' : '\u0412\u0456\u0434\u0434\u0456\u043b\u0435\u043d\u043d\u044f / \u043f\u043e\u0448\u0442\u043e\u043c\u0430\u0442'}</label><input id="fieldWarehouse" type="text" placeholder="${currentLang === 'en' ? 'Branch number' : '\u2116 \u0432\u0456\u0434\u0434\u0456\u043b\u0435\u043d\u043d\u044f'}"></div>
         </div>`;
     }
     updateTotals();
   }
 
-  // ── Оплата ──
   function renderPayment() {
     const wrap = document.getElementById('paymentOptions');
     if (!wrap) return;
     const icons = {
-      cod:   `<svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>`,
-      card:  `<svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>`,
+      cod: `<svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>`,
+      card: `<svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>`,
       photo: `<svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
     };
-    wrap.innerHTML = MOTTY_SETTINGS.payment.map(p => `
-      <div class="payment-option" onclick="CartPage.selectPayment('${p.id}')">
-        ${icons[p.icon] || ''}
-        <h5>${p.name}</h5>
-        <p>${p.desc}</p>
-      </div>`).join('');
-    selectPayment(MOTTY_SETTINGS.payment[0].id);
+    const english = {
+      cod: ['Cash on delivery', 'Pay when you receive your order'],
+      card: ['Online card payment', 'Monobank / PrivatBank'],
+      photo: ['After item photo', 'Pay after receiving a photo of the finished item'],
+    };
+    wrap.innerHTML = MOTTY_SETTINGS.payment.map(p => {
+      const label = currentLang === 'en' ? (english[p.id] || [p.name, p.desc]) : [p.name, p.desc];
+      return `<div class="payment-option" onclick="CartPage.selectPayment('${p.id}')">${icons[p.icon] || ''}<h5>${label[0]}</h5><p>${label[1]}</p></div>`;
+    }).join('');
+    const paymentId = selectedPayment || MOTTY_SETTINGS.payment[0].id;
+    selectPayment(paymentId);
   }
 
   function selectPayment(id) {
@@ -157,7 +185,7 @@ const CartPage = (() => {
     const total = subtotal + deliveryCost;
 
     _setText('subtotalAmt', fmt(subtotal));
-    _setText('deliveryAmt', deliveryCost === 0 ? 'Безкоштовно' : fmt(deliveryCost));
+    _setText('deliveryAmt', deliveryCost === 0 ? (currentLang === 'en' ? 'Free' : '\u0411\u0435\u0437\u043a\u043e\u0448\u0442\u043e\u0432\u043d\u043e') : fmt(deliveryCost));
     _setText('totalAmt', fmt(total));
     if (deliveryCost === 0) {
       const el = document.getElementById('deliveryAmt');
@@ -174,9 +202,9 @@ const CartPage = (() => {
   async function submit() {
     const name  = _val('fieldName');
     const phone = _val('fieldPhone');
-    if (!name || !phone) { showToast('Заповніть ім\'я і телефон ❗'); return; }
-    if (!selectedDelivery) { showToast('Оберіть спосіб доставки ❗'); return; }
-    if (!selectedPayment)  { showToast('Оберіть спосіб оплати ❗'); return; }
+    if (!name || !phone) { showToast(currentLang === 'en' ? 'Please enter your name and phone number.' : '\u0417\u0430\u043f\u043e\u0432\u043d\u0456\u0442\u044c \u0456\u043c\u0027\u044f \u0442\u0430 \u0442\u0435\u043b\u0435\u0444\u043e\u043d.'); return; }
+    if (!selectedDelivery) { showToast(currentLang === 'en' ? 'Please select a delivery method.' : '\u041e\u0431\u0435\u0440\u0456\u0442\u044c \u0441\u043f\u043e\u0441\u0456\u0431 \u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0438.'); return; }
+    if (!selectedPayment) { showToast(currentLang === 'en' ? 'Please select a payment method.' : '\u041e\u0431\u0435\u0440\u0456\u0442\u044c \u0441\u043f\u043e\u0441\u0456\u0431 \u043e\u043f\u043b\u0430\u0442\u0438.'); return; }
 
     const d = MOTTY_SETTINGS.delivery.find(d => d.id === selectedDelivery);
     const order = {
@@ -195,12 +223,12 @@ const CartPage = (() => {
     };
 
     const btn = document.getElementById('submitBtn');
-    btn.textContent = 'Відправляємо...';
+    btn.textContent = currentLang === 'en' ? 'Submitting...' : '\u0412\u0456\u0434\u043f\u0440\u0430\u0432\u043b\u044f\u0454\u043c\u043e...';
     btn.disabled = true;
 
     let saved;
     try { const result=await Store.submitOrder(order); saved=result.order; }
-    catch(e){ btn.disabled=false; btn.textContent='Підтвердити замовлення'; showToast('Не вдалося відправити замовлення. Перевірте з’єднання та спробуйте ще раз.',5000); console.error(e); return; }
+    catch(e){ btn.disabled=false; btn.innerHTML=confirmLabel(); showToast(currentLang === 'en' ? 'Could not submit the order. Check your connection and try again.' : '\u041d\u0435 \u0432\u0434\u0430\u043b\u043e\u0441\u044f \u0432\u0456\u0434\u043f\u0440\u0430\u0432\u0438\u0442\u0438 \u0437\u0430\u043c\u043e\u0432\u043b\u0435\u043d\u043d\u044f. \u0421\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u0449\u0435 \u0440\u0430\u0437.',5000); console.error(e); return; }
     Store.clearCart();
 
     // Показати success
@@ -210,10 +238,29 @@ const CartPage = (() => {
     document.getElementById('successOrderId').textContent = saved.id;
   }
 
+  function rerenderText() {
+    const items = Store.getCartItems();
+    if (!items.length) return;
+    const savedValues = {};
+    ['fieldCity', 'fieldWarehouse', 'fieldAddress'].forEach(id => {
+      const field = document.getElementById(id);
+      if (field) savedValues[id] = field.value;
+    });
+    renderSummary(items);
+    renderCheckoutItems(items);
+    renderDelivery();
+    renderPayment();
+    Object.keys(savedValues).forEach(id => {
+      const field = document.getElementById(id);
+      if (field) field.value = savedValues[id];
+    });
+    updateTotals();
+  }
+
   function _val(id) {
     const el = document.getElementById(id);
     return el ? el.value.trim() : '';
   }
 
-  return { init, selectDelivery, selectPayment, changeQty, removeItem, submit };
+  return { init, selectDelivery, selectPayment, changeQty, removeItem, submit, rerenderText };
 })();

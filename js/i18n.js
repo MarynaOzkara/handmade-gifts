@@ -255,6 +255,29 @@ const I18N = {
     free_delivery:  '✅ Free delivery',
     to_free:        '🚚 Until free delivery: ',
     close:          'Close',
+    cart_back_catalog: 'Back to catalog',
+    cart_page_title: 'Checkout',
+    cart_section_order: 'Your order',
+    cart_section_contact: 'Contact details',
+    cart_section_delivery: 'Delivery method',
+    cart_section_payment: 'Payment method',
+    cart_label_name: 'Name *',
+    cart_label_phone: 'Phone *',
+    cart_label_social: 'Telegram or Instagram (optional)',
+    cart_label_comment: 'Order notes',
+    cart_name_placeholder: 'Olena or Mykhailo',
+    cart_social_placeholder: '@username',
+    cart_comment_placeholder: 'Packaging, inscriptions, or special requests...',
+    cart_summary: 'Order summary',
+    cart_subtotal_label: 'Items:',
+    cart_delivery_label: 'Delivery:',
+    cart_total_label: 'Total:',
+    cart_confirm: 'Place order &rarr;',
+    cart_guarantee: 'Payment on delivery or after a photo of the finished item',
+    cart_success_title: 'Thank you for your order!',
+    cart_success_order: 'Your order ',
+    cart_success_accepted: ' has been received successfully.',
+    cart_success_followup: 'Our artisan will contact you soon to confirm the details.',
     about_label:    'About us',
     about_h2:       'A workshop where warm gifts are born',
     about_p1:       'We are a small artisan workshop Motty Handmade from Kyiv. Every piece is handmade from sketch to final packaging in kraft paper with a wax seal.',
@@ -359,11 +382,13 @@ function setLang(lang) {
   localStorage.setItem('motty_lang', lang);
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
-    if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
-      el.placeholder = t(key);
-    } else {
-      el.innerHTML = t(key);
-    }
+    const hasPlaceholder = el.hasAttribute('placeholder');
+    const property = hasPlaceholder ? 'placeholder' : 'innerHTML';
+    if (el.dataset.i18nDefault === undefined) el.dataset.i18nDefault = el[property];
+    const translations = I18N[lang] || I18N.ua;
+    el[property] = Object.prototype.hasOwnProperty.call(translations, key)
+      ? translations[key]
+      : el.dataset.i18nDefault;
   });
   document.querySelectorAll('.lang-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.lang === lang);
@@ -374,4 +399,5 @@ function setLang(lang) {
     Catalog.rerenderText();
   }
   if (typeof renderFaq === 'function') renderFaq();
+  if (typeof CartPage !== 'undefined' && typeof CartPage.rerenderText === 'function') CartPage.rerenderText();
 }

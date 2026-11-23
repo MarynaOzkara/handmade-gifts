@@ -39,7 +39,9 @@
 }
 .admin-logout button:hover { background: rgba(255,255,255,.12); color: #F9E8EE; }
 
-.admin-main { background: var(--bg); overflow: hidden; }
+.admin-main { background: var(--bg); overflow: hidden; min-width: 0; }
+.admin-menu-toggle { display: none; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--surface); color: var(--ink); cursor: pointer; flex: 0 0 auto; }
+.admin-sidebar-backdrop { display: none; }
 .admin-topbar {
   background: var(--surface); border-bottom: 1px solid var(--line);
   padding: 16px 28px; display: flex;
@@ -72,7 +74,7 @@
 }
 .admin-table-head {
   padding: 16px 20px; border-bottom: 1px solid var(--line);
-  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;flex-wrap: wrap;
 }
 .admin-table-head h3 { font-family: var(--ff-serif); font-size: 18px; font-weight: 500; }
 .admin-search {
@@ -200,11 +202,30 @@ tr:hover td { background: var(--soft); }
 
 /* ── Responsive Admin ── */
 @media (max-width: 900px) {
-  .admin-layout { grid-template-columns: 1fr; }
-  .admin-sidebar { display: none; }
+  .admin-layout { display: block; width: 100%; min-height: 100vh; }
+  .admin-sidebar {
+    display: flex; position: fixed; inset: 0 auto 0 0; z-index: 1001;
+    width: min(290px, 86vw); height: 100vh; height: 100dvh;
+    transform: translateX(-105%); transition: transform .28s ease;
+    box-shadow: 12px 0 32px rgba(0,0,0,.18); overscroll-behavior: contain;
+  }
+  .admin-layout.admin-sidebar-open .admin-sidebar { transform: translateX(0); }
+  .admin-sidebar-backdrop {
+    display: block; position: fixed; inset: 0; z-index: 1000;
+    border: 0; padding: 0; background: rgba(18,10,14,.48);
+    opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s ease;
+  }
+  .admin-layout.admin-sidebar-open .admin-sidebar-backdrop { opacity: 1; visibility: visible; }
+  .admin-menu-toggle { display: inline-flex; }
+  .admin-topbar { justify-content: flex-start; gap: 14px; }
+  .admin-topbar h1 { min-width: 0; }
+  #adminDate { margin-left: auto; text-align: right; }
+  body.admin-menu-open { overflow: hidden; }
   .admin-stats { grid-template-columns: 1fr 1fr; }
+  .admin-table-wrap { overflow-x: auto; }
 }
 @media (max-width: 600px) {
+  
   .admin-stats { grid-template-columns: 1fr; }
   .admin-form-grid { grid-template-columns: 1fr; }
   .admin-form-full { grid-column: span 1; }

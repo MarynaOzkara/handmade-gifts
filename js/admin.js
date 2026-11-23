@@ -21,7 +21,7 @@ const Admin = (() => {
     try { await MottyDB.seed(); await MottyDB.loadOrders(); window.MOTTY_DB_ORDERS=MottyDB.orders(); }
     catch(e){ showToast('Не вдалося завантажити замовлення: '+e.message,5000); }
     document.getElementById('loginScreen').style.display='none';
-    document.getElementById('appScreen').style.display='grid';
+    document.getElementById('appScreen').style.display='';
     switchTab('dashboard');
   }
 
