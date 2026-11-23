@@ -126,6 +126,169 @@ const CartPage = (() => {
     return (d.freeFrom > 0 && total >= d.freeFrom) ? 0 : d.price;
   }
 
+  /* ── Нова Пошта API ── */
+  const NP_API_KEY = '9d08a6c85163293f90f5d4a75618d07b';
+  const NP_API_URL = 'https://api.novaposhta.ua/v2.0/json/';
+
+  async function npRequest(modelName, calledMethod, methodProps = {}) {
+    const res = await fetch(NP_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        apiKey: NP_API_KEY,
+        modelName,
+        calledMethod,
+        methodProperties: methodProps
+      })
+    });
+    const data = await res.json();
+    return data.success ? data.data : [];
+  }
+
+  async function loadCities(query) {
+    return npRequest('Address', 'getCities', { FindByString: query, Limit: 20 });
+  }
+
+  async function loadWarehouses(cityRef, query = '') {
+    return npRequest('AddressGeneral', 'getWarehouses', {
+      CityRef: cityRef,
+      FindByString: query,
+      Limit: 50
+    });
+  }
+
+  function renderCityAutocomplete(fields) {
+    const isEn = currentLang === 'en';
+    fields.innerHTML = `
+      <div class="field np-city-field">
+        <label>${isEn ? 'City' : 'Місто'}</label>
+        <input id="fieldCityText" type="text" autocomplete="off"
+          placeholder="${isEn ? 'Start typing city name…' : 'Почніть вводити назву міста…'}">
+        <input id="fieldCity" type="hidden">
+        <ul id="npCityList" class="np-dropdown" style="display:none"></ul>
+      </div>
+      <div class="field np-warehouse-field" id="warehouseWrap">
+        <label>${isEn ? 'Branch / parcel locker' : 'Відділення / поштомат'}</label>
+        <input id="npWarehouseSearch" type="text" autocomplete="off"
+          placeholder="${isEn ? 'First choose a city' : 'Спочатку оберіть місто'}" disabled>
+        <input id="fieldWarehouse" type="hidden">
+        <ul id="npWarehouseList" class="np-dropdown" style="display:none"></ul>
+        <div id="npLoading" style="display:none;font-size:12px;color:var(--mute);margin-top:4px">
+          ${isEn ? 'Loading…' : 'Завантаження…'}
+        </div>
+      </div>`;
+
+    let cityTimer, warehouseTimer;
+    let selectedCityRef = '';
+    let cityDropdownOpen = false;
+    let whDropdownOpen   = false;
+
+    const cityInput  = document.getElementById('fieldCityText');
+    const cityHidden = document.getElementById('fieldCity');
+    const cityList   = document.getElementById('npCityList');
+    const whSearch   = document.getElementById('npWarehouseSearch');
+    const whHidden   = document.getElementById('fieldWarehouse');
+    const whList     = document.getElementById('npWarehouseList');
+    const loadingEl  = document.getElementById('npLoading');
+
+    /* ── Міста ── */
+    function showCityList(items) {
+      if (!items.length) { closeCityList(); return; }
+      cityList.innerHTML = items.map(c =>
+        `<li data-ref="${c.Ref}" data-name="${c.Description}">${c.Description}${c.AreaDescription ? ', ' + c.AreaDescription : ''}</li>`
+      ).join('');
+      cityList.style.display = 'block';
+      cityDropdownOpen = true;
+    }
+
+    function closeCityList() {
+      cityList.style.display = 'none';
+      cityDropdownOpen = false;
+    }
+
+    cityList.addEventListener('mousedown', e => {
+      const li = e.target.closest('li');
+      if (!li) return;
+      e.preventDefault(); // не допускаємо blur до вибору
+      cityInput.value  = li.dataset.name;
+      cityHidden.value = li.dataset.name;
+      selectedCityRef  = li.dataset.ref;
+      closeCityList();
+      // розблоковуємо поле відділень і завантажуємо
+      whSearch.disabled     = false;
+      whSearch.placeholder  = isEn ? 'Search branch or locker…' : 'Пошук відділення або поштомату…';
+      whSearch.value        = '';
+      whHidden.value        = '';
+      fetchWarehouses('');
+    });
+
+    cityInput.addEventListener('input', () => {
+      cityHidden.value  = '';
+      selectedCityRef   = '';
+      whSearch.disabled = true;
+      whSearch.placeholder = isEn ? 'First choose a city' : 'Спочатку оберіть місто';
+      whSearch.value    = '';
+      whHidden.value    = '';
+      closeWhList();
+      clearTimeout(cityTimer);
+      const q = cityInput.value.trim();
+      if (q.length < 2) { closeCityList(); return; }
+      cityTimer = setTimeout(async () => {
+        const cities = await loadCities(q);
+        showCityList(cities);
+      }, 350);
+    });
+
+    cityInput.addEventListener('blur', () => {
+      // затримка щоб mousedown на li встиг спрацювати
+      setTimeout(() => { if (!cityDropdownOpen) return; closeCityList(); }, 200);
+    });
+
+    /* ── Відділення ── */
+    function closeWhList() {
+      whList.style.display = 'none';
+      whDropdownOpen = false;
+    }
+
+    async function fetchWarehouses(query) {
+      if (!selectedCityRef) return;
+      loadingEl.style.display = 'block';
+      closeWhList();
+      let items = [];
+      try { items = await loadWarehouses(selectedCityRef, query); } catch(e) {}
+      loadingEl.style.display = 'none';
+      if (!items.length) return;
+      whList.innerHTML = items.map(w =>
+        `<li data-name="${w.Description}">${w.Description}</li>`
+      ).join('');
+      whList.style.display = 'block';
+      whDropdownOpen = true;
+    }
+
+    whList.addEventListener('mousedown', e => {
+      const li = e.target.closest('li');
+      if (!li) return;
+      e.preventDefault();
+      whSearch.value = li.dataset.name;
+      whHidden.value = li.dataset.name;
+      closeWhList();
+    });
+
+    whSearch.addEventListener('input', () => {
+      whHidden.value = '';
+      clearTimeout(warehouseTimer);
+      warehouseTimer = setTimeout(() => fetchWarehouses(whSearch.value.trim()), 400);
+    });
+
+    whSearch.addEventListener('focus', () => {
+      if (selectedCityRef && !whSearch.value.trim()) fetchWarehouses('');
+    });
+
+    whSearch.addEventListener('blur', () => {
+      setTimeout(() => { if (!whDropdownOpen) return; closeWhList(); }, 200);
+    });
+  }
+
   function selectDelivery(id) {
     selectedDelivery = id;
     document.querySelectorAll('.delivery-option').forEach(el => {
@@ -140,11 +303,8 @@ const CartPage = (() => {
         <div class="field"><label>${currentLang === 'en' ? 'City' : '\u041c\u0456\u0441\u0442\u043e'}</label><input id="fieldCity" type="text" placeholder="${currentLang === 'en' ? 'For example: Kyiv' : '\u041d\u0430\u043f\u0440\u0438\u043a\u043b\u0430\u0434: \u041a\u0438\u0457\u0432'}"></div>
         <div class="field"><label>${currentLang === 'en' ? 'Street and building' : '\u0412\u0443\u043b\u0438\u0446\u044f \u0456 \u0431\u0443\u0434\u0438\u043d\u043e\u043a'}</label><input id="fieldAddress" type="text" placeholder="${currentLang === 'en' ? 'Street, building number' : '\u0432\u0443\u043b. \u0425\u0440\u0435\u0449\u0430\u0442\u0438\u043a, 1'}"></div>`;
     } else {
-      fields.innerHTML = `
-        <div class="field-row">
-          <div class="field"><label>${currentLang === 'en' ? 'City' : '\u041c\u0456\u0441\u0442\u043e'}</label><input id="fieldCity" type="text" placeholder="${currentLang === 'en' ? 'For example: Kyiv' : '\u041d\u0430\u043f\u0440\u0438\u043a\u043b\u0430\u0434: \u041a\u0438\u0457\u0432'}"></div>
-          <div class="field"><label>${currentLang === 'en' ? 'Branch / parcel locker' : '\u0412\u0456\u0434\u0434\u0456\u043b\u0435\u043d\u043d\u044f / \u043f\u043e\u0448\u0442\u043e\u043c\u0430\u0442'}</label><input id="fieldWarehouse" type="text" placeholder="${currentLang === 'en' ? 'Branch number' : '\u2116 \u0432\u0456\u0434\u0434\u0456\u043b\u0435\u043d\u043d\u044f'}"></div>
-        </div>`;
+      /* nova — відділення через API */
+      renderCityAutocomplete(fields);
     }
     updateTotals();
   }

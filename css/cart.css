@@ -161,3 +161,41 @@
 @media (max-width: 600px) {
   .payment-options { grid-template-columns: 1fr; }
 }
+
+/* ── Нова Пошта autocomplete dropdown ── */
+.np-city-field,
+.np-warehouse-field { position: relative; }
+
+.np-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  max-height: 220px;
+  overflow-y: auto;
+  margin: 2px 0 0;
+  padding: 4px 0;
+  list-style: none;
+}
+
+.np-dropdown li {
+  padding: 9px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--fg);
+  transition: background .15s;
+}
+
+.np-dropdown li:hover {
+  background: var(--bg2, #f5f5f5);
+}
+
+.np-warehouse-field input[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
