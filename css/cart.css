@@ -21,7 +21,7 @@
 .checkout-section-num {
   width: 28px; height: 28px; border-radius: 50%;
   background: var(--acc); color: white;
-  font-family: var(--ff-serif); font-size: 16px; font-weight: 600;
+  font-family: var(--ff-sans); font-size: 16px; font-weight: 600;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
@@ -125,7 +125,7 @@
 .success-page {
   min-height: 60vh; display: flex;
   align-items: center; justify-content: center;
-  padding: 60px 20px; text-align: center;
+  padding: 0 20px; text-align: center;
 }
 .success-box { max-width: 480px; }
 .success-icon {

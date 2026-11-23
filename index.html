@@ -389,7 +389,7 @@
     <!-- Step 1 -->
     <div class="quiz-step show" id="qs0">
       <h3 class="quiz-step-title" data-i18n="q1_title">Для кого обираєте подарунок?</h3>
-      <div class="quiz-step-sub" data-i18n="q1_sub"></div>
+      <div class="quiz-step-sub" data-i18n="q1_sub">Якщо не знаєте кому, оберіть «Інше».</div>
       <div class="quiz-options" id="qOpts0"></div>
     </div>
     <!-- Step 2 -->
@@ -720,7 +720,14 @@
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <div class="footer-logo">Motty<small>Handmade</small></div>
+        <div class="footer-logo">
+          <a class="footer-logo-link" href="index.html">
+            <img src="./assets/logo-footer.svg" width="40" height="40" alt="Motty logo"/>
+            <p class="logo-title">
+                Motty<small>Handmade</small>
+            </p>
+          </a>
+        </div>
         <p data-i18n="footer_desc">Авторські подарунки ручної роботи з Києва.</p>
         <div class="social-links">
           <a href="https://t.me/OzkaraM" class="social-link" target="_blank" rel="noopener">
@@ -745,8 +752,9 @@
       <div class="footer-col">
         <h5 data-i18n="footer_info">Інформація</h5>
         <a href="#about" data-i18n="footer_about">Про нас</a>
-        <a href="#faq">FAQ</a>
-        <a href="#gift-picker" data-i18n="footer_order">Індивідуальне замовлення</a>
+        <a href="#faq">Питання</a>
+        <a href="#gift-picker" data-i18n="footer_picker">Підібрати подарунок</a>
+        <a href="#order-quiz" data-i18n="footer_order">Індивідуальне замовлення</a>
         <a href="cart.html" data-i18n="footer_cart">Кошик</a>
       </div>
       <div class="footer-col">
@@ -759,7 +767,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p data-i18n="footer_copy">© 2024 Motty Handmade. Усі права захищено.</p>
+      <p data-i18n="footer_copy">© 2026 Motty Handmade. Усі права захищено.</p>
       <a href="admin.html" data-i18n="nav_admin">Керування магазином</a>
       <p data-i18n="footer_tag">Авторські вироби ручної роботи</p>
     </div>
@@ -778,108 +786,10 @@
 <script src="js/slider.js"></script>
 <script src="js/quiz.js"></script>
 <script src="js/order-quiz.js"></script>
-<script>
+<script src="js/mobile-menu.js"></script>
+<script src="js/faq.js"></script>
+<script src="js/new-products.js"></script>
+<script src="js/init.js"></script>
 
-// ── Mobile menu ──
-document.getElementById('hamburger').addEventListener('click', function(){
-  this.classList.toggle('open');
-  document.getElementById('mobileOverlay').classList.toggle('open');
-  document.getElementById('mobilePanel').classList.toggle('open');
-});
-function closeMobile(){
-  document.getElementById('hamburger').classList.remove('open');
-  document.getElementById('mobileOverlay').classList.remove('open');
-  document.getElementById('mobilePanel').classList.remove('open');
-}
-// Show mobile sidebar close btn on mobile
-document.querySelectorAll('.mobile-sidebar-close').forEach(b => b.style.display = 'flex');
-
-// ── Crossfade hero image ──
-(function(){
-  var el = document.getElementById('heroImgMain');
-  if(!el) return;
-  var faded = false;
-  setInterval(function(){ faded=!faded; el.classList.toggle('faded', faded); }, 3500);
-})();
-
-// ── FAQ ──
-var FAQ_DATA = [
-  ['faq_q1','faq_a1'],['faq_q2','faq_a2'],['faq_q3','faq_a3'],
-  ['faq_q4','faq_a4'],['faq_q5','faq_a5'],['faq_q6','faq_a6'],
-];
-function renderFaq(){
-  var grid = document.getElementById('faqGrid');
-  if(!grid) return;
-  grid.innerHTML = FAQ_DATA.map(function(f,i){
-    return '<div class="faq-item">' +
-      '<button class="faq-q" onclick="toggleFaq(' + i + ')" id="faqBtn' + i + '">' +
-        '<span>' + t(f[0]) + '</span>' +
-        '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
-      '</button>' +
-      '<div class="faq-a" id="faqA' + i + '"><div class="faq-a-inner">' + t(f[1]) + '</div></div>' +
-    '</div>';
-  }).join('');
-}
-function toggleFaq(i){
-  var btn=document.getElementById('faqBtn'+i), ans=document.getElementById('faqA'+i);
-  var open=btn.classList.contains('open');
-  document.querySelectorAll('.faq-q').forEach(function(b){b.classList.remove('open');});
-  document.querySelectorAll('.faq-a').forEach(function(a){a.classList.remove('open');});
-  if(!open){ btn.classList.add('open'); ans.classList.add('open'); }
-}
-
-// ── NEW PRODUCTS SLIDER (from admin) ──
-(function(){
-  function getNewProds(){
-    var custom = [];
-    try{ custom = JSON.parse(localStorage.getItem('motty_custom_products'))||[]; }catch(e){}
-    // Sort by addedAt desc, take latest 3
-    return custom.sort(function(a,b){ return (b.addedAt||0)-(a.addedAt||0); }).slice(0,3);
-  }
-  var wrap = document.getElementById('newProdsSlider');
-  if(!wrap) return;
-  var prods = getNewProds();
-  if(!prods.length){ wrap.closest('section').style.display='none'; return; }
-  wrap.innerHTML = prods.map(function(p){
-    return '<div class="np-slide" onclick="Catalog.openModal(\''+p.id+'\')">'+
-      '<div style="aspect-ratio:1;overflow:hidden;border-radius:12px;margin-bottom:14px">'+
-        '<img src="'+(p.images&&p.images[0]?p.images[0]:'')+'" alt="'+p.title+'" style="width:100%;height:100%;object-fit:cover;transition:transform .4s" onmouseover="this.style.transform=\'scale(1.05)\'" onmouseout="this.style.transform=\'scale(1)\'">'+
-      '</div>'+
-      '<div style="padding:0 4px">'+
-        '<div style="font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">'+catName(p.cat)+'</div>'+
-        '<div style="font-size:15px;font-weight:500;margin-bottom:6px;line-height:1.3">'+p.title+'</div>'+
-        '<div style="display:flex;align-items:center;gap:8px">'+
-          '<span style="font-size:16px;font-weight:600;color:var(--acc)">'+fmt(p.price)+'</span>'+
-          (p.old?'<span style="font-size:12px;color:var(--mute);text-decoration:line-through">'+fmt(p.old)+'</span>':'')+ 
-        '</div>'+
-      '</div>'+
-    '</div>';
-  }).join('');
-})();
-
-// ── Init ──
-document.addEventListener('DOMContentLoaded', async function(){
-  await MottyDB.init();
-  // Apply saved language (no Catalog.rerenderText yet)
-  var savedLang = 'ua';
-  try { savedLang = localStorage.getItem('motty_lang') || 'ua'; } catch(e){}
-  currentLang = savedLang;
-  document.querySelectorAll('[data-i18n]').forEach(function(el){
-    var key = el.dataset.i18n;
-    if(el.tagName === 'INPUT' && el.hasAttribute('placeholder')) el.placeholder = t(key);
-    else el.innerHTML = t(key);
-  });
-  document.querySelectorAll('.lang-btn').forEach(function(b){
-    b.classList.toggle('active', b.dataset.lang === savedLang);
-  });
-
-  // Init catalog (renders products, sidebar, etc.)
-  Catalog.init();
-
-  // Render FAQ after catalog init
-  renderFaq();
-});
-
-</script>
 </body>
 </html>

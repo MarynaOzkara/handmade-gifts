@@ -40,3 +40,11 @@
 
   resetTimer();
 })();
+
+// Hero image crossfade
+(function(){
+  var el = document.getElementById('heroImgMain');
+  if(!el) return;
+  var faded = false;
+  setInterval(function(){ faded = !faded; el.classList.toggle('faded', faded); }, 3500);
+})();

@@ -71,8 +71,8 @@ function catName(id){ const c=MOTTY_CATEGORIES.find(c=>c.id===id); return c?c.na
 function badgeHtml(p){
   if(!p.badge&&!p.old) return '';
   let b='';
-  if(p.badge==='hit') b+=`<span class="badge badge-hit">${currentLang==='en'?'Hit':'Хіт'}</span>`;
-  if(p.badge==='new') b+=`<span class="badge badge-new">${currentLang==='en'?'New':'Нове'}</span>`;
+  if(p.badge==='hit') b+=`<span class="badge badge-hit">${currentLang==='en'?'Best seller':'Хіт продажу'}</span>`;
+  if(p.badge==='new') b+=`<span class="badge badge-new">${currentLang==='en'?'New arrival':'Новинка'}</span>`;
   if(p.old>0){
     const disc=Math.round((1-p.price/p.old)*100);
     b+=`<span class="badge badge-sale">-${disc}%</span>`;

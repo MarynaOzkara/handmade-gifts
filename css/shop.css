@@ -357,8 +357,8 @@
 .order-quiz-box{background:#F5F5F8;border-radius:20px;max-width:620px;width:100%;margin:auto;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.2);overflow:hidden}
 .order-quiz-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10}
 .order-quiz-bar{display:flex;justify-content:center;gap:8px;margin-bottom:24px}
-.oq-dot{height:5px;border-radius:3px;width:36px;background:var(--line);transition:.35s}
-.oq-dot-a{background:var(--acc)}
+.oq-dot{height:5px;border-radius:3px;width:10px;background:var(--line);transition:.35s}
+.oq-dot-a{background:var(--acc);width:36px}
 .oq-step{display:none}
 .oq-show{display:block}
 .oq-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
