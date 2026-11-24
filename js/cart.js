@@ -191,19 +191,21 @@ const CartPage = (() => {
     const whList     = document.getElementById('npWarehouseList');
     const loadingEl  = document.getElementById('npLoading');
 
-    /* ── Позиціонування під input (position:fixed обходить overflow:hidden) ── */
+    /* ── Позиціонування під input.
+         position:fixed → координати відносно viewport, scrollY не додаємо ── */
     function positionDropdown(dropdown, inputEl) {
       const r = inputEl.getBoundingClientRect();
-      dropdown.style.top    = (r.bottom + window.scrollY + 2) + 'px';
-      dropdown.style.left   = r.left + 'px';
-      dropdown.style.width  = r.width + 'px';
-      // перевіряємо чи не виходить за низ вікна
       const spaceBelow = window.innerHeight - r.bottom;
-      if (spaceBelow < 230) {
-        dropdown.style.top    = '';
+      dropdown.style.left  = r.left + 'px';
+      dropdown.style.width = r.width + 'px';
+      if (spaceBelow < 230 && r.top > 230) {
+        // відкриваємо вгору
         dropdown.style.bottom = (window.innerHeight - r.top + 2) + 'px';
+        dropdown.style.top    = 'auto';
       } else {
-        dropdown.style.bottom = '';
+        // відкриваємо вниз
+        dropdown.style.top    = (r.bottom + 2) + 'px';
+        dropdown.style.bottom = 'auto';
       }
     }
 
@@ -257,8 +259,8 @@ const CartPage = (() => {
     });
 
     cityInput.addEventListener('blur', () => {
-      // затримка щоб mousedown на li встиг спрацювати
-      setTimeout(() => { if (!cityDropdownOpen) return; closeCityList(); }, 200);
+      // затримка щоб mousedown на li встиг спрацювати першим
+      setTimeout(() => { closeCityList(); }, 200);
     });
 
     /* ── Відділення ── */
@@ -303,7 +305,7 @@ const CartPage = (() => {
     });
 
     whSearch.addEventListener('blur', () => {
-      setTimeout(() => { if (!whDropdownOpen) return; closeWhList(); }, 200);
+      setTimeout(() => { closeWhList(); }, 200);
     });
   }
 
