@@ -127,22 +127,28 @@ const CartPage = (() => {
   }
 
   /* ── Нова Пошта API ── */
-  const NP_API_KEY = '9d08a6c85163293f90f5d4a75618d07b';
-  const NP_API_URL = 'https://api.novaposhta.ua/v2.0/json/';
+  // Proxy через Supabase Edge Function (обходить CORS GitHub Pages)
+  const NP_PROXY_URL = 'https://vabcrkeaboessvcqsexp.supabase.co/functions/v1/nova-poshta';
+  const NP_ANON_KEY  = 'sb_publishable_xxMv73seH3m6lP2dkPQPIg_DZZqOASj';
 
   async function npRequest(modelName, calledMethod, methodProps = {}) {
-    const res = await fetch(NP_API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        apiKey: NP_API_KEY,
-        modelName,
-        calledMethod,
-        methodProperties: methodProps
-      })
-    });
-    const data = await res.json();
-    return data.success ? data.data : [];
+    try {
+      const res = await fetch(NP_PROXY_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${NP_ANON_KEY}`,
+        },
+        body: JSON.stringify({ modelName, calledMethod, methodProperties: methodProps })
+      });
+      if (!res.ok) { console.error('[NP] HTTP error', res.status); return null; }
+      const data = await res.json();
+      if (!data.success) { console.error('[NP] API error', data.errors); return null; }
+      return data.data;
+    } catch(e) {
+      console.error('[NP] fetch failed:', e.message);
+      return null;
+    }
   }
 
   async function loadCities(query) {
@@ -155,6 +161,18 @@ const CartPage = (() => {
       FindByString: query,
       Limit: 50
     });
+  }
+
+  function fallbackToManual(fields, isEn) {
+    fields.innerHTML = `
+      <div class="field">
+        <label>${isEn ? 'City' : 'Місто'}</label>
+        <input id="fieldCity" type="text" placeholder="${isEn ? 'e.g. Kyiv' : 'Наприклад: Київ'}">
+      </div>
+      <div class="field">
+        <label>${isEn ? 'Branch / locker number' : 'Номер відділення або поштомату'}</label>
+        <input id="fieldWarehouse" type="text" placeholder="${isEn ? 'Branch №' : 'Відділення №'}">
+      </div>`;
   }
 
   function renderCityAutocomplete(fields) {
@@ -254,6 +272,7 @@ const CartPage = (() => {
       if (q.length < 2) { closeCityList(); return; }
       cityTimer = setTimeout(async () => {
         const cities = await loadCities(q);
+        if (cities === null) { fallbackToManual(fields, isEn); return; }
         showCityList(cities);
       }, 350);
     });
@@ -273,10 +292,9 @@ const CartPage = (() => {
       if (!selectedCityRef) return;
       loadingEl.style.display = 'block';
       closeWhList();
-      let items = [];
-      try { items = await loadWarehouses(selectedCityRef, query); } catch(e) {}
+      const items = await loadWarehouses(selectedCityRef, query);
       loadingEl.style.display = 'none';
-      if (!items.length) return;
+      if (!items || !items.length) return;
       whList.innerHTML = items.map(w =>
         `<li data-name="${w.Description}">${w.Description}</li>`
       ).join('');
