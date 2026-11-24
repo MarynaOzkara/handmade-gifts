@@ -167,18 +167,14 @@
 .np-warehouse-field { position: relative; }
 
 .np-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  background: var(--bg);
-  border: 1px solid var(--border);
+  position: fixed;
+  z-index: 9999;
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, #e0e0e0);
   border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  box-shadow: 0 8px 24px rgba(0,0,0,.14);
   max-height: 220px;
   overflow-y: auto;
-  margin: 2px 0 0;
   padding: 4px 0;
   list-style: none;
 }

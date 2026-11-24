@@ -191,12 +191,29 @@ const CartPage = (() => {
     const whList     = document.getElementById('npWarehouseList');
     const loadingEl  = document.getElementById('npLoading');
 
+    /* ── Позиціонування під input (position:fixed обходить overflow:hidden) ── */
+    function positionDropdown(dropdown, inputEl) {
+      const r = inputEl.getBoundingClientRect();
+      dropdown.style.top    = (r.bottom + window.scrollY + 2) + 'px';
+      dropdown.style.left   = r.left + 'px';
+      dropdown.style.width  = r.width + 'px';
+      // перевіряємо чи не виходить за низ вікна
+      const spaceBelow = window.innerHeight - r.bottom;
+      if (spaceBelow < 230) {
+        dropdown.style.top    = '';
+        dropdown.style.bottom = (window.innerHeight - r.top + 2) + 'px';
+      } else {
+        dropdown.style.bottom = '';
+      }
+    }
+
     /* ── Міста ── */
     function showCityList(items) {
       if (!items.length) { closeCityList(); return; }
       cityList.innerHTML = items.map(c =>
         `<li data-ref="${c.Ref}" data-name="${c.Description}">${c.Description}${c.AreaDescription ? ', ' + c.AreaDescription : ''}</li>`
       ).join('');
+      positionDropdown(cityList, cityInput);
       cityList.style.display = 'block';
       cityDropdownOpen = true;
     }
@@ -261,6 +278,7 @@ const CartPage = (() => {
       whList.innerHTML = items.map(w =>
         `<li data-name="${w.Description}">${w.Description}</li>`
       ).join('');
+      positionDropdown(whList, whSearch);
       whList.style.display = 'block';
       whDropdownOpen = true;
     }
