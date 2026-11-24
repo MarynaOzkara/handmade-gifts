@@ -128,7 +128,7 @@ const CartPage = (() => {
 
   /* ── Нова Пошта API ── */
   // Proxy через Supabase Edge Function (обходить CORS GitHub Pages)
-  const NP_PROXY_URL = 'https://vabcrkeaboessvcqsexp.supabase.co/functions/v1/nova-poshta';
+  const NP_PROXY_URL = 'https://vabcrkeaboessvcqsexp.supabase.co/functions/v1/hyper-handler';
   const NP_ANON_KEY  = 'sb_publishable_xxMv73seH3m6lP2dkPQPIg_DZZqOASj';
 
   async function npRequest(modelName, calledMethod, methodProps = {}) {
@@ -230,9 +230,10 @@ const CartPage = (() => {
     /* ── Міста ── */
     function showCityList(items) {
       if (!items.length) { closeCityList(); return; }
-      cityList.innerHTML = items.map(c =>
-        `<li data-ref="${c.Ref}" data-name="${c.Description}">${c.Description}${c.AreaDescription ? ', ' + c.AreaDescription : ''}</li>`
+      cityList.innerHTML = items.map((c, i) =>
+        `<li data-idx="${i}">${c.Description}${c.AreaDescription ? ', ' + c.AreaDescription : ''}</li>`
       ).join('');
+      cityList._items = items.map(c => ({ name: c.Description, ref: c.Ref }));
       positionDropdown(cityList, cityInput);
       cityList.style.display = 'block';
       cityDropdownOpen = true;
@@ -243,15 +244,15 @@ const CartPage = (() => {
       cityDropdownOpen = false;
     }
 
-    cityList.addEventListener('mousedown', e => {
+    cityList.addEventListener('pointerdown', e => {
       const li = e.target.closest('li');
       if (!li) return;
-      e.preventDefault(); // не допускаємо blur до вибору
-      cityInput.value  = li.dataset.name;
-      cityHidden.value = li.dataset.name;
-      selectedCityRef  = li.dataset.ref;
+      e.preventDefault();
+      const item = cityList._items ? cityList._items[+li.dataset.idx] : { name: li.textContent, ref: '' };
+      cityInput.value  = item.name;
+      cityHidden.value = item.name;
+      selectedCityRef  = item.ref;
       closeCityList();
-      // розблоковуємо поле відділень і завантажуємо
       whSearch.disabled     = false;
       whSearch.placeholder  = isEn ? 'Search branch or locker…' : 'Пошук відділення або поштомату…';
       whSearch.value        = '';
@@ -278,8 +279,7 @@ const CartPage = (() => {
     });
 
     cityInput.addEventListener('blur', () => {
-      // затримка щоб mousedown на li встиг спрацювати першим
-      setTimeout(() => { closeCityList(); }, 200);
+      setTimeout(() => { closeCityList(); }, 300);
     });
 
     /* ── Відділення ── */
@@ -295,20 +295,23 @@ const CartPage = (() => {
       const items = await loadWarehouses(selectedCityRef, query);
       loadingEl.style.display = 'none';
       if (!items || !items.length) return;
-      whList.innerHTML = items.map(w =>
-        `<li data-name="${w.Description}">${w.Description}</li>`
+      whList.innerHTML = items.map((w, i) =>
+        `<li data-idx="${i}">${w.Description}</li>`
       ).join('');
+      // зберігаємо масив окремо щоб уникнути проблем з лапками в data-атрибутах
+      whList._items = items.map(w => w.Description);
       positionDropdown(whList, whSearch);
       whList.style.display = 'block';
       whDropdownOpen = true;
     }
 
-    whList.addEventListener('mousedown', e => {
+    whList.addEventListener('pointerdown', e => {
       const li = e.target.closest('li');
       if (!li) return;
       e.preventDefault();
-      whSearch.value = li.dataset.name;
-      whHidden.value = li.dataset.name;
+      const name = whList._items ? whList._items[+li.dataset.idx] : li.textContent;
+      whSearch.value = name;
+      whHidden.value = name;
       closeWhList();
     });
 
@@ -323,7 +326,7 @@ const CartPage = (() => {
     });
 
     whSearch.addEventListener('blur', () => {
-      setTimeout(() => { closeWhList(); }, 200);
+      setTimeout(() => { closeWhList(); }, 300);
     });
   }
 
