@@ -433,6 +433,7 @@
   .gift-picker-inner{grid-template-columns:1fr}
   .gift-picker-img{max-height:260px}
   .quiz-box{padding:40px 24px 24px;max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px)}
+  .quiz-overlay{padding: 8px;}
   .quiz-options{grid-template-columns:1fr}
   .quiz-results-grid{grid-template-columns:1fr 1fr}
   .faq-grid{grid-template-columns:1fr}
